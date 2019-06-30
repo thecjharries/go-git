@@ -14,11 +14,11 @@ const (
 )
 
 var (
-	ErrRefLeadsWithPeriod = errors.New("ref name cannot begin with .")
+	ErrRefLeadingDot = errors.New("ref name cannot begin with .")
 )
 
 var (
-	PatternLeadsWithPeriod = regexp.MustCompile(`^\.`)
+	PatternLeadingDot = regexp.MustCompile(`^\.`)
 )
 
 type RefNameChecker struct {
@@ -31,9 +31,9 @@ type RefNameChecker struct {
 	}
 
 	ActionOptions struct {
-		HandleLeadingPeriods            ActionChoice
+		HandleLeadingDot                ActionChoice
 		HandleTrailingLock              ActionChoice
-		EnsureAtLeastOneForwardSlash    ActionChoice
+		HandleAtLeastOneForwardSlash    ActionChoice
 		HandleDoubleDots                ActionChoice
 		HandleExcludedCharacters        ActionChoice
 		HandleLeadingForwardSlash       ActionChoice
@@ -49,15 +49,15 @@ type RefNameChecker struct {
 	}
 }
 
-func (v *RefNameChecker) HandleLeadingPeriods() error {
-	switch v.ActionOptions.HandleLeadingPeriods {
+func (v *RefNameChecker) HandleLeadingDot() error {
+	switch v.ActionOptions.HandleLeadingDot {
 	case Validate:
-		if PatternLeadsWithPeriod.MatchString(v.Name.String()) {
-			return ErrRefLeadsWithPeriod
+		if PatternLeadingDot.MatchString(v.Name.String()) {
+			return ErrRefLeadingDot
 		}
 		break
 	case Sanitize:
-		v.Name = ReferenceName(PatternLeadsWithPeriod.ReplaceAllString(v.Name.String(), ""))
+		v.Name = ReferenceName(PatternLeadingDot.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
 }
@@ -66,7 +66,7 @@ func (v *RefNameChecker) HandleTrailingLock() error {
 	return nil
 }
 
-func (v *RefNameChecker) EnsureAtLeastOneForwardSlash() error {
+func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
 	return nil
 }
 

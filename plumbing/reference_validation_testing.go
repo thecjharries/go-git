@@ -12,26 +12,26 @@ type ReferenceValidationSuite struct {
 var _ = Suite(&ReferenceValidationSuite{})
 
 var (
-	LeadingPeriodNames = []string{
+	LeadingDotNames = []string{
 		".a/name",
 		"a/name",
 	}
 )
 
-func (s *ReferenceValidationSuite) TestValidateHandleLeadingPeriods(c *C) {
-	s.Checker.ActionOptions.HandleLeadingPeriods = Validate
-	s.Checker.Name = ReferenceName(LeadingPeriodNames[0])
-	err := s.Checker.HandleLeadingPeriods()
-	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefLeadsWithPeriod))
-	s.Checker.Name = ReferenceName(LeadingPeriodNames[1])
-	err = s.Checker.HandleLeadingPeriods()
+func (s *ReferenceValidationSuite) TestValidateHandleLeadingDot(c *C) {
+	s.Checker.ActionOptions.HandleLeadingDot = Validate
+	s.Checker.Name = ReferenceName(LeadingDotNames[0])
+	err := s.Checker.HandleLeadingDot()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefLeadingDot))
+	s.Checker.Name = ReferenceName(LeadingDotNames[1])
+	err = s.Checker.HandleLeadingDot()
 	c.Assert(err, IsNil)
 }
 
-func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingPeriods(c *C) {
-	s.Checker.ActionOptions.HandleLeadingPeriods = Sanitize
-	s.Checker.Name = ReferenceName(LeadingPeriodNames[0])
-	err := s.Checker.HandleLeadingPeriods()
+func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingDot(c *C) {
+	s.Checker.ActionOptions.HandleLeadingDot = Sanitize
+	s.Checker.Name = ReferenceName(LeadingDotNames[0])
+	err := s.Checker.HandleLeadingDot()
 	c.Assert(err, IsNil)
-	c.Assert(s.Checker.Name.String(), Equals, LeadingPeriodNames[1])
+	c.Assert(s.Checker.Name.String(), Equals, LeadingDotNames[1])
 }

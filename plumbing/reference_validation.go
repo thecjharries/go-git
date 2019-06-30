@@ -14,11 +14,29 @@ const (
 )
 
 var (
-	ErrRefLeadingDot = errors.New("ref name cannot begin with .")
+	ErrRefLeadingDot                = errors.New("ref name cannot begin with .")
+	ErrRefTrailingLock              = errors.New("WIP pls Ignore")
+	ErrRefAtLeastOneForwardSlash    = errors.New("WIP pls Ignore")
+	ErrRefDoubleDots                = errors.New("WIP pls Ignore")
+	ErrRefExcludedCharacters        = errors.New("WIP pls Ignore")
+	ErrRefLeadingForwardSlash       = errors.New("WIP pls Ignore")
+	ErrRefTrailingForwardSlash      = errors.New("WIP pls Ignore")
+	ErrRefConsecutiveForwardSlashes = errors.New("WIP pls Ignore")
+	ErrRefTrailingDot               = errors.New("WIP pls Ignore")
+	ErrRefAtOpenBrace               = errors.New("WIP pls Ignore")
 )
 
 var (
-	PatternLeadingDot = regexp.MustCompile(`^\.`)
+	PatternLeadingDot                = regexp.MustCompile(`^\.`)
+	PatternTrailingLock              = regexp.MustCompile(`^$`)
+	PatternAtLeastOneForwardSlash    = regexp.MustCompile(`^$`)
+	PatternDoubleDots                = regexp.MustCompile(`^$`)
+	PatternExcludedCharacters        = regexp.MustCompile(`^$`)
+	PatternLeadingForwardSlash       = regexp.MustCompile(`^$`)
+	PatternTrailingForwardSlash      = regexp.MustCompile(`^$`)
+	PatternConsecutiveForwardSlashes = regexp.MustCompile(`^$`)
+	PatternTrailingDot               = regexp.MustCompile(`^$`)
+	PatternAtOpenBrace               = regexp.MustCompile(`^$`)
 )
 
 type RefNameChecker struct {
@@ -63,37 +81,127 @@ func (v *RefNameChecker) HandleLeadingDot() error {
 }
 
 func (v *RefNameChecker) HandleTrailingLock() error {
+	switch v.ActionOptions.HandleTrailingLock {
+	case Validate:
+		if PatternTrailingLock.MatchString(v.Name.String()) {
+			return ErrRefTrailingLock
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternTrailingLock.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
+	switch v.ActionOptions.HandleAtLeastOneForwardSlash {
+	case Validate:
+		if PatternAtLeastOneForwardSlash.MatchString(v.Name.String()) {
+			return ErrRefAtLeastOneForwardSlash
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternAtLeastOneForwardSlash.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleDoubleDots() error {
+	switch v.ActionOptions.HandleDoubleDots {
+	case Validate:
+		if PatternDoubleDots.MatchString(v.Name.String()) {
+			return ErrRefDoubleDots
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternDoubleDots.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleExcludedCharacters() error {
+	switch v.ActionOptions.HandleExcludedCharacters {
+	case Validate:
+		if PatternExcludedCharacters.MatchString(v.Name.String()) {
+			return ErrRefExcludedCharacters
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternExcludedCharacters.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleLeadingForwardSlash() error {
+	switch v.ActionOptions.HandleLeadingForwardSlash {
+	case Validate:
+		if PatternLeadingForwardSlash.MatchString(v.Name.String()) {
+			return ErrRefLeadingForwardSlash
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternLeadingForwardSlash.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleTrailingForwardSlash() error {
+	switch v.ActionOptions.HandleTrailingForwardSlash {
+	case Validate:
+		if PatternTrailingForwardSlash.MatchString(v.Name.String()) {
+			return ErrRefTrailingForwardSlash
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternTrailingForwardSlash.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
+	switch v.ActionOptions.HandleConsecutiveForwardSlashes {
+	case Validate:
+		if PatternConsecutiveForwardSlashes.MatchString(v.Name.String()) {
+			return ErrRefConsecutiveForwardSlashes
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternConsecutiveForwardSlashes.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleTrailingDot() error {
+	switch v.ActionOptions.HandleTrailingDot {
+	case Validate:
+		if PatternTrailingDot.MatchString(v.Name.String()) {
+			return ErrRefTrailingDot
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternTrailingDot.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }
 
 func (v *RefNameChecker) HandleAtOpenBrace() error {
+	switch v.ActionOptions.HandleAtOpenBrace {
+	case Validate:
+		if PatternAtOpenBrace.MatchString(v.Name.String()) {
+			return ErrRefAtOpenBrace
+		}
+		break
+	case Sanitize:
+		v.Name = ReferenceName(PatternAtOpenBrace.ReplaceAllString(v.Name.String(), ""))
+	}
 	return nil
+
 }

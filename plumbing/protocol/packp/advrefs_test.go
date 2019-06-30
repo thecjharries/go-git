@@ -18,7 +18,7 @@ type AdvRefSuite struct{}
 var _ = Suite(&AdvRefSuite{})
 
 func (s *AdvRefSuite) TestAddReferenceSymbolic(c *C) {
-	ref := plumbing.NewSymbolicReference("foo", "bar")
+	ref := plumbing.NewSymbolicReference(plumbing.NewReferenceName("foo"), plumbing.NewReferenceName("bar"))
 
 	a := NewAdvRefs()
 	err := a.AddReference(ref)
@@ -30,7 +30,7 @@ func (s *AdvRefSuite) TestAddReferenceSymbolic(c *C) {
 }
 
 func (s *AdvRefSuite) TestAddReferenceHash(c *C) {
-	ref := plumbing.NewHashReference("foo", plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
+	ref := plumbing.NewHashReference(plumbing.NewReferenceName("foo"), plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
 
 	a := NewAdvRefs()
 	err := a.AddReference(ref)
@@ -44,9 +44,9 @@ func (s *AdvRefSuite) TestAllReferences(c *C) {
 	hash := plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c")
 
 	a := NewAdvRefs()
-	err := a.AddReference(plumbing.NewSymbolicReference("foo", "bar"))
+	err := a.AddReference(plumbing.NewSymbolicReference(plumbing.NewReferenceName("foo"), plumbing.NewReferenceName("bar")))
 	c.Assert(err, IsNil)
-	err = a.AddReference(plumbing.NewHashReference("bar", hash))
+	err = a.AddReference(plumbing.NewHashReference(plumbing.NewReferenceName("bar"), hash))
 	c.Assert(err, IsNil)
 
 	refs, err := a.AllReferences()
@@ -58,7 +58,7 @@ func (s *AdvRefSuite) TestAllReferences(c *C) {
 	var count int
 	iter.ForEach(func(ref *plumbing.Reference) error {
 		count++
-		switch ref.Name() {
+		switch ref.Name().String() {
 		case "bar":
 			c.Assert(ref.Hash(), Equals, hash)
 		case "foo":
@@ -101,7 +101,7 @@ func (s *AdvRefSuite) TestNoSymRefCapabilityHeadToOtherThanMaster(c *C) {
 	headHash := plumbing.NewHash("0000000000000000000000000000000000000000")
 	a.Head = &headHash
 	ref1 := plumbing.NewHashReference(plumbing.Master, plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
-	ref2 := plumbing.NewHashReference("other/ref", plumbing.NewHash("0000000000000000000000000000000000000000"))
+	ref2 := plumbing.NewHashReference(plumbing.NewReferenceName("other/ref"), plumbing.NewHash("0000000000000000000000000000000000000000"))
 
 	err := a.AddReference(ref1)
 	c.Assert(err, IsNil)
@@ -134,8 +134,8 @@ func (s *AdvRefSuite) TestNoSymRefCapabilityHeadToNoMasterAlphabeticallyOrdered(
 	headHash := plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c")
 	a.Head = &headHash
 	ref1 := plumbing.NewHashReference(plumbing.Master, plumbing.NewHash("0000000000000000000000000000000000000000"))
-	ref2 := plumbing.NewHashReference("aaaaaaaaaaaaaaa", plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
-	ref3 := plumbing.NewHashReference("bbbbbbbbbbbbbbb", plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
+	ref2 := plumbing.NewHashReference(plumbing.NewReferenceName("aaaaaaaaaaaaaaa"), plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
+	ref3 := plumbing.NewHashReference(plumbing.NewReferenceName("bbbbbbbbbbbbbbb"), plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
 
 	err := a.AddReference(ref1)
 	c.Assert(err, IsNil)

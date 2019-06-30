@@ -124,23 +124,23 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleDoubleDots(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, DoubleDotsNames[1])
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleExcludedCharacters(c *C) {
-// 	s.Checker.ActionOptions.HandleExcludedCharacters = Validate
-// 	s.Checker.Name = ReferenceName(ExcludedCharactersNames[0])
-// 	err := s.Checker.HandleExcludedCharacters()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefExcludedCharacters))
-// 	s.Checker.Name = ReferenceName(ExcludedCharactersNames[1])
-// 	err = s.Checker.HandleExcludedCharacters()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleExcludedCharacters(c *C) {
+	s.Checker.ActionOptions.HandleExcludedCharacters = Validate
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[0])
+	err := s.Checker.HandleExcludedCharacters()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefExcludedCharacters))
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[1])
+	err = s.Checker.HandleExcludedCharacters()
+	c.Assert(err, IsNil)
+}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
-// 	s.Checker.ActionOptions.HandleExcludedCharacters = Sanitize
-// 	s.Checker.Name = ReferenceName(ExcludedCharactersNames[0])
-// 	err := s.Checker.HandleExcludedCharacters()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[1])
-// }
+func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
+	s.Checker.ActionOptions.HandleExcludedCharacters = Sanitize
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[0])
+	err := s.Checker.HandleExcludedCharacters()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[1])
+}
 
 // func (s *ReferenceValidationSuite) TestValidateHandleLeadingForwardSlash(c *C) {
 // 	s.Checker.ActionOptions.HandleLeadingForwardSlash = Validate

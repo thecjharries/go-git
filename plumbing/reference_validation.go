@@ -28,16 +28,18 @@ var (
 )
 
 var (
-	PatternLeadingDot                = regexp.MustCompile(`^\.`)
-	PatternTrailingLock              = regexp.MustCompile(`\.lock$`)
-	PatternAtLeastOneForwardSlash    = regexp.MustCompile(`^[^/]+$`)
-	PatternDoubleDots                = regexp.MustCompile(`\.\.`)
-	PatternExcludedCharacters        = regexp.MustCompile(`[\000-\037\177 ~^:?*[]+`)
-	PatternLeadingForwardSlash       = regexp.MustCompile(`^/`)
-	PatternTrailingForwardSlash      = regexp.MustCompile(`/$`)
-	PatternConsecutiveForwardSlashes = regexp.MustCompile(`//+`)
-	PatternTrailingDot               = regexp.MustCompile(`\.$`)
-	PatternAtOpenBrace               = regexp.MustCompile(`@{`)
+	PatternLeadingDot                  = regexp.MustCompile(`^\.`)
+	PatternTrailingLock                = regexp.MustCompile(`\.lock$`)
+	PatternAtLeastOneForwardSlash      = regexp.MustCompile(`^[^/]+$`)
+	PatternDoubleDots                  = regexp.MustCompile(`\.\.`)
+	PatternExcludedCharacters          = regexp.MustCompile(`[\000-\037\177 ~^:?*[]+`)
+	PatternLeadingForwardSlash         = regexp.MustCompile(`^/`)
+	PatternTrailingForwardSlash        = regexp.MustCompile(`/$`)
+	PatternConsecutiveForwardSlashes   = regexp.MustCompile(`//+`)
+	PatternTrailingDot                 = regexp.MustCompile(`\.$`)
+	PatternAtOpenBrace                 = regexp.MustCompile(`@{`)
+	PatternExcludedCharactersAlternate = regexp.MustCompile(`[\000-\037\177 ~^:?[]+`)
+	PatternOneAllowedAsterisk          = regexp.MustCompile(`^[^*]+?\*?[^*]+?$`)
 )
 
 type RefNameChecker struct {
@@ -129,7 +131,12 @@ func (v *RefNameChecker) HandleExcludedCharacters() error {
 		}
 		break
 	case Sanitize:
-		v.Name = ReferenceName(PatternExcludedCharacters.ReplaceAllString(v.Name.String(), ""))
+		if v.CheckRefOptions.RefSpecPattern && PatternOneAllowedAsterisk.MatchString(v.Name.String()) {
+			v.Name = ReferenceName(PatternExcludedCharactersAlternate.ReplaceAllString(v.Name.String(), ""))
+
+		} else {
+			v.Name = ReferenceName(PatternExcludedCharacters.ReplaceAllString(v.Name.String(), ""))
+		}
 	}
 	return nil
 }

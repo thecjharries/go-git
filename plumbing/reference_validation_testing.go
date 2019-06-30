@@ -31,6 +31,9 @@ var (
 	ExcludedCharactersNames = []string{
 		`an^ame`,
 		"aname",
+		`a/lon*ger/name`,
+		`a/lon*ger/na*me`,
+		`a/longer/name`,
 	}
 	LeadingForwardSlashNames = []string{
 		"/a/name",
@@ -179,6 +182,23 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
 	err := s.Checker.HandleExcludedCharacters()
 	c.Assert(err, IsNil)
 	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[1])
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[2])
+	err = s.Checker.HandleExcludedCharacters()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[4])
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[3])
+	err = s.Checker.HandleExcludedCharacters()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[4])
+	s.Checker.CheckRefOptions.RefSpecPattern = true
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[2])
+	err = s.Checker.HandleExcludedCharacters()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[2])
+	s.Checker.Name = ReferenceName(ExcludedCharactersNames[3])
+	err = s.Checker.HandleExcludedCharacters()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[4])
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleExcludedCharacters(c *C) {

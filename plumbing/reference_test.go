@@ -136,3 +136,9 @@ func (s *ReferenceSuite) TestReferenceNameFormat(c *C) {
 	}
 
 }
+
+func (s *ReferenceSuite) TestExposedProperties(c *C) {
+	empty_rn := NewReferenceName("")
+	c.Assert(ExampleReferenceName.IsNotEmpty(), Equals, true)
+	c.Assert(empty_rn.IsNotEmpty(), Equals, false)
+}

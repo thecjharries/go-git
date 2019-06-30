@@ -208,8 +208,8 @@ func parseCommand(b []byte) (*Command, error) {
 	}
 
 	var (
-		os, ns,n string
-
+		os, ns string
+		n      plumbing.ReferenceName
 	)
 	if _, err := fmt.Sscanf(string(b), "%s %s %s", &os, &ns, &n); err != nil {
 		return nil, errMalformedCommand(err)
@@ -225,7 +225,7 @@ func parseCommand(b []byte) (*Command, error) {
 		return nil, errInvalidNewObjId(err)
 	}
 
-	return &Command{Old: oh, New: nh, Name: plumbing.NewReferenceName(n)}, nil
+	return &Command{Old: oh, New: nh, Name: plumbing.ReferenceName(n)}, nil
 }
 
 func parseHash(s string) (plumbing.Hash, error) {

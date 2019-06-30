@@ -34,10 +34,9 @@ var (
 type ReferenceType int8
 
 const (
-	InvalidReference   ReferenceType = 0
-	HashReference      ReferenceType = 1
-	SymbolicReference  ReferenceType = 2
-	MalformedReference ReferenceType = 3
+	InvalidReference  ReferenceType = 0
+	HashReference     ReferenceType = 1
+	SymbolicReference ReferenceType = 2
 )
 
 func (r ReferenceType) String() string {
@@ -48,94 +47,71 @@ func (r ReferenceType) String() string {
 		return "hash-reference"
 	case SymbolicReference:
 		return "symbolic-reference"
-	case MalformedReference:
-		return "malformed-reference"
 	}
 
 	return ""
 }
 
-// By using a function we can check the format
-type ReferenceName struct {
-	Name string
-	Type ReferenceType
-}
-
-func (rn ReferenceName) String() string {
-	return rn.Name
-}
-
-func NewReferenceName(name ...string) ReferenceName {
-	rn := &ReferenceName{}
-	if 1 < len(name) {
-		rn.Name = strings.Join(name, "/")
-	} else {
-		rn.Name = name[0]
-	}
-	return *rn
-}
-
-func (rn *ReferenceName) HasPrefix(pattern string) bool {
-	return strings.HasPrefix(rn.Name, pattern)
-}
-
-func (rn *ReferenceName) IsNotEmpty() bool {
-	return "" != rn.Name
-}
+// ReferenceName reference name's
+type ReferenceName string
 
 // NewBranchReferenceName returns a reference name describing a branch based on
 // his short name.
 func NewBranchReferenceName(name string) ReferenceName {
-	return NewReferenceName(refHeadPrefix + name)
+	return ReferenceName(refHeadPrefix + name)
 }
 
 // NewNoteReferenceName returns a reference name describing a note based on his
 // short name.
 func NewNoteReferenceName(name string) ReferenceName {
-	return NewReferenceName(refNotePrefix + name)
+	return ReferenceName(refNotePrefix + name)
 }
 
 // NewRemoteReferenceName returns a reference name describing a remote branch
 // based on his short name and the remote name.
 func NewRemoteReferenceName(remote, name string) ReferenceName {
-	return NewReferenceName(refRemotePrefix + fmt.Sprintf("%s/%s", remote, name))
+	return ReferenceName(refRemotePrefix + fmt.Sprintf("%s/%s", remote, name))
 }
 
 // NewRemoteHEADReferenceName returns a reference name describing a the HEAD
 // branch of a remote.
 func NewRemoteHEADReferenceName(remote string) ReferenceName {
-	return NewReferenceName(refRemotePrefix + fmt.Sprintf("%s/%s", remote, HEAD))
+	return ReferenceName(refRemotePrefix + fmt.Sprintf("%s/%s", remote, HEAD))
 }
 
 // NewTagReferenceName returns a reference name describing a tag based on short
 // his name.
 func NewTagReferenceName(name string) ReferenceName {
-	return NewReferenceName(refTagPrefix + name)
+	return ReferenceName(refTagPrefix + name)
 }
 
 // IsBranch check if a reference is a branch
 func (r ReferenceName) IsBranch() bool {
-	return strings.HasPrefix(r.Name, refHeadPrefix)
+	return strings.HasPrefix(string(r), refHeadPrefix)
 }
 
 // IsNote check if a reference is a note
 func (r ReferenceName) IsNote() bool {
-	return strings.HasPrefix(r.Name, refNotePrefix)
+	return strings.HasPrefix(string(r), refNotePrefix)
 }
 
 // IsRemote check if a reference is a remote
 func (r ReferenceName) IsRemote() bool {
-	return strings.HasPrefix(r.Name, refRemotePrefix)
+	return strings.HasPrefix(string(r), refRemotePrefix)
 }
 
 // IsTag check if a reference is a tag
 func (r ReferenceName) IsTag() bool {
-	return strings.HasPrefix(r.Name, refTagPrefix)
+	return strings.HasPrefix(string(r), refTagPrefix)
+}
+
+func (r ReferenceName) String() string {
+	return string(r)
 }
 
 // Short returns the short name of a ReferenceName
 func (r ReferenceName) Short() string {
-	s := r.Name
+	s := string(r)
 	res := s
 	for _, format := range RefRevParseRules {
 		_, err := fmt.Sscanf(s, format, &res)
@@ -147,9 +123,9 @@ func (r ReferenceName) Short() string {
 	return res
 }
 
-var (
-	HEAD   = NewReferenceName("HEAD")
-	Master = NewReferenceName("refs/heads/master")
+const (
+	HEAD   ReferenceName = "HEAD"
+	Master ReferenceName = "refs/heads/master"
 )
 
 // Reference is a representation of git reference
@@ -164,10 +140,10 @@ type Reference struct {
 // the resulting reference can be a SymbolicReference or a HashReference base
 // on the target provided
 func NewReferenceFromStrings(name, target string) *Reference {
-	n := NewReferenceName(name)
+	n := ReferenceName(name)
 
 	if strings.HasPrefix(target, symrefPrefix) {
-		target := NewReferenceName(target[len(symrefPrefix):])
+		target := ReferenceName(target[len(symrefPrefix):])
 		return NewSymbolicReference(n, target)
 	}
 

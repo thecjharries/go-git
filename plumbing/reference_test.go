@@ -6,8 +6,8 @@ type ReferenceSuite struct{}
 
 var _ = Suite(&ReferenceSuite{})
 
-var (
-	ExampleReferenceName = NewReferenceName("refs/heads/v4")
+const (
+	ExampleReferenceName ReferenceName = "refs/heads/v4"
 )
 
 func (s *ReferenceSuite) TestReferenceTypeString(c *C) {
@@ -19,12 +19,12 @@ func (s *ReferenceSuite) TestReferenceNameShort(c *C) {
 }
 
 func (s *ReferenceSuite) TestReferenceNameWithSlash(c *C) {
-	r := NewReferenceName("refs/remotes/origin/feature/AllowSlashes")
+	r := ReferenceName("refs/remotes/origin/feature/AllowSlashes")
 	c.Assert(r.Short(), Equals, "origin/feature/AllowSlashes")
 }
 
 func (s *ReferenceSuite) TestReferenceNameNote(c *C) {
-	r := NewReferenceName("refs/notes/foo")
+	r := ReferenceName("refs/notes/foo")
 	c.Assert(r.Short(), Equals, "notes/foo")
 }
 
@@ -82,63 +82,19 @@ func (s *ReferenceSuite) TestNewTagReferenceName(c *C) {
 func (s *ReferenceSuite) TestIsBranch(c *C) {
 	r := ExampleReferenceName
 	c.Assert(r.IsBranch(), Equals, true)
-	c.Assert(r.HasPrefix(refHeadPrefix), Equals, true)
 }
 
 func (s *ReferenceSuite) TestIsNote(c *C) {
-	r := NewReferenceName("refs/notes/foo")
-	c.Assert(r.HasPrefix(refNotePrefix), Equals, true)
+	r := ReferenceName("refs/notes/foo")
 	c.Assert(r.IsNote(), Equals, true)
 }
 
 func (s *ReferenceSuite) TestIsRemote(c *C) {
-	r := NewReferenceName("refs/remotes/origin/master")
-	c.Assert(r.HasPrefix(refRemotePrefix), Equals, true)
+	r := ReferenceName("refs/remotes/origin/master")
 	c.Assert(r.IsRemote(), Equals, true)
 }
 
 func (s *ReferenceSuite) TestIsTag(c *C) {
-	r := NewReferenceName("refs/tags/v3.1.")
-	c.Assert(r.HasPrefix(refTagPrefix), Equals, true)
+	r := ReferenceName("refs/tags/v3.1.")
 	c.Assert(r.IsTag(), Equals, true)
-}
-
-var (
-	RefNames = [][]string{
-		[]string{
-			"origin/master",
-			"origin",
-			"master",
-		},
-		[]string{
-			"remotes/origin/master",
-			"remotes",
-			"origin",
-			"master",
-		},
-		[]string{
-			"refs/remotes/origin/master",
-			"refs",
-			"remotes",
-			"origin",
-			"master",
-		},
-	}
-)
-
-func (s *ReferenceSuite) TestReferenceNameFormat(c *C) {
-	for _, ref_name_slice := range RefNames {
-		new_name_method := NewReferenceName(ref_name_slice[1:]...)
-		old_name_method := NewReferenceName(ref_name_slice[0])
-
-		c.Assert(new_name_method.Name, Equals, old_name_method.Name)
-		c.Assert(new_name_method.String(), Equals, old_name_method.String())
-	}
-
-}
-
-func (s *ReferenceSuite) TestExposedProperties(c *C) {
-	empty_rn := NewReferenceName("")
-	c.Assert(ExampleReferenceName.IsNotEmpty(), Equals, true)
-	c.Assert(empty_rn.IsNotEmpty(), Equals, false)
 }

@@ -57,7 +57,7 @@ func (s *ConfigSuite) TestUnmarshall(c *C) {
 	c.Assert(cfg.Submodules["qux"].URL, Equals, "https://github.com/foo/qux.git")
 	c.Assert(cfg.Submodules["qux"].Branch, Equals, "bar")
 	c.Assert(cfg.Branches["master"].Remote, Equals, "origin")
-	c.Assert(cfg.Branches["master"].Merge.String(), Equals, plumbing.NewReferenceName("refs/heads/master").String())
+	c.Assert(cfg.Branches["master"].Merge, Equals, plumbing.ReferenceName("refs/heads/master"))
 }
 
 func (s *ConfigSuite) TestMarshall(c *C) {
@@ -110,7 +110,7 @@ func (s *ConfigSuite) TestMarshall(c *C) {
 	cfg.Branches["master"] = &Branch{
 		Name:   "master",
 		Remote: "origin",
-		Merge:  plumbing.NewReferenceName("refs/heads/master"),
+		Merge:  "refs/heads/master",
 	}
 
 	b, err := cfg.Marshal()
@@ -161,7 +161,7 @@ func (s *ConfigSuite) TestValidateConfig(c *C) {
 			"foo": {
 				Name:   "foo",
 				Remote: "origin",
-				Merge:  plumbing.NewReferenceName("refs/heads/foo"),
+				Merge:  plumbing.ReferenceName("refs/heads/foo"),
 			},
 		},
 	}
@@ -214,7 +214,7 @@ func (s *ConfigSuite) TestValidateInvalidBranchKey(c *C) {
 			"foo": {
 				Name:   "bar",
 				Remote: "origin",
-				Merge:  plumbing.NewReferenceName("refs/heads/bar"),
+				Merge:  plumbing.ReferenceName("refs/heads/bar"),
 			},
 		},
 	}
@@ -228,12 +228,12 @@ func (s *ConfigSuite) TestValidateInvalidBranch(c *C) {
 			"bar": {
 				Name:   "bar",
 				Remote: "origin",
-				Merge:  plumbing.NewReferenceName("refs/heads/bar"),
+				Merge:  plumbing.ReferenceName("refs/heads/bar"),
 			},
 			"foo": {
 				Name:   "foo",
 				Remote: "origin",
-				Merge:  plumbing.NewReferenceName("baz"),
+				Merge:  plumbing.ReferenceName("baz"),
 			},
 		},
 	}

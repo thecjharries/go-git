@@ -17,7 +17,7 @@ var (
 		"a/name",
 	}
 	TrailingLockNames = []string{
-		".a/name",
+		"a/name.lock",
 		"a/name",
 	}
 	AtLeastOneForwardSlashNames = []string{
@@ -25,32 +25,32 @@ var (
 		"a/name",
 	}
 	DoubleDotsNames = []string{
-		".a/name",
-		"a/name",
+		"a..name",
+		"aname",
 	}
 	ExcludedCharactersNames = []string{
-		".a/name",
-		"a/name",
+		`an^ame`,
+		"aname",
 	}
 	LeadingForwardSlashNames = []string{
-		".a/name",
+		"/a/name",
 		"a/name",
 	}
 	TrailingForwardSlashNames = []string{
-		".a/name",
+		"a/name/",
 		"a/name",
 	}
 	ConsecutiveForwardSlashesNames = []string{
-		".a/name",
+		"a//name",
 		"a/name",
 	}
 	TrailingDotNames = []string{
-		".a/name",
+		"a/name.",
 		"a/name",
 	}
 	AtOpenBraceNames = []string{
-		".a/name",
-		"a/name",
+		`a/na@{me`,
+		`a/name`,
 	}
 )
 

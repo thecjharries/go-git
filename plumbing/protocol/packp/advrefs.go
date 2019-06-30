@@ -107,7 +107,7 @@ func (a *AdvRefs) resolveHead(s storer.ReferenceStorer) error {
 		return nil
 	}
 
-	ref, err := s.Reference(plumbing.ReferenceName(plumbing.Master))
+	ref, err := s.Reference(plumbing.NewReferenceName(plumbing.Master.String()))
 
 	// check first if HEAD is pointing to master
 	if err == nil {
@@ -133,7 +133,7 @@ func (a *AdvRefs) resolveHead(s storer.ReferenceStorer) error {
 
 	var refNames []string
 	err = refIter.ForEach(func(r *plumbing.Reference) error {
-		refNames = append(refNames, string(r.Name()))
+		refNames = append(refNames, r.String())
 		return nil
 	})
 	if err != nil {
@@ -144,7 +144,7 @@ func (a *AdvRefs) resolveHead(s storer.ReferenceStorer) error {
 
 	var headSet bool
 	for _, refName := range refNames {
-		ref, err := s.Reference(plumbing.ReferenceName(refName))
+		ref, err := s.Reference(plumbing.NewReferenceName(refName))
 		if err != nil {
 			return err
 		}
@@ -187,8 +187,8 @@ func (a *AdvRefs) addSymbolicRefs(s storer.ReferenceStorer) error {
 			err := fmt.Errorf("bad number of `:` in symref value (%q)", symref)
 			return plumbing.NewUnexpectedError(err)
 		}
-		name := plumbing.ReferenceName(chunks[0])
-		target := plumbing.ReferenceName(chunks[1])
+		name := plumbing.NewReferenceName(chunks[0])
+		target := plumbing.NewReferenceName(chunks[1])
 		ref := plumbing.NewSymbolicReference(name, target)
 		if err := s.SetReference(ref); err != nil {
 			return nil

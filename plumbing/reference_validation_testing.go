@@ -43,6 +43,8 @@ var (
 	ConsecutiveForwardSlashesNames = []string{
 		"a//name",
 		"a/name",
+		"a///longer///name",
+		"a/longer/name",
 	}
 	TrailingDotNames = []string{
 		"a/name.",
@@ -160,41 +162,48 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingForwardSlash(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, LeadingForwardSlashNames[1])
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleTrailingForwardSlash(c *C) {
-// 	s.Checker.ActionOptions.HandleTrailingForwardSlash = Validate
-// 	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
-// 	err := s.Checker.HandleTrailingForwardSlash()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingForwardSlash))
-// 	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[1])
-// 	err = s.Checker.HandleTrailingForwardSlash()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleTrailingForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleTrailingForwardSlash = Validate
+	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
+	err := s.Checker.HandleTrailingForwardSlash()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingForwardSlash))
+	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[1])
+	err = s.Checker.HandleTrailingForwardSlash()
+	c.Assert(err, IsNil)
+}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingForwardSlash(c *C) {
-// 	s.Checker.ActionOptions.HandleTrailingForwardSlash = Sanitize
-// 	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
-// 	err := s.Checker.HandleTrailingForwardSlash()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, TrailingForwardSlashNames[1])
-// }
+func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleTrailingForwardSlash = Sanitize
+	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
+	err := s.Checker.HandleTrailingForwardSlash()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, TrailingForwardSlashNames[1])
+}
 
-// func (s *ReferenceValidationSuite) TestValidateHandleConsecutiveForwardSlashes(c *C) {
-// 	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Validate
-// 	s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[0])
-// 	err := s.Checker.HandleConsecutiveForwardSlashes()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefConsecutiveForwardSlashes))
-// 	s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[1])
-// 	err = s.Checker.HandleConsecutiveForwardSlashes()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleConsecutiveForwardSlashes(c *C) {
+	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Validate
+	for index, name := range ConsecutiveForwardSlashesNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleConsecutiveForwardSlashes()
+		if 1 == index%2 {
+			c.Assert(err, IsNil)
+		} else {
+			c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefConsecutiveForwardSlashes))
+		}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c *C) {
-// 	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Sanitize
-// 	s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[0])
-// 	err := s.Checker.HandleConsecutiveForwardSlashes()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, ConsecutiveForwardSlashesNames[1])
-// }
+	}
+}
+
+func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c *C) {
+	s.Checker.CheckRefOptions.Normalize = true
+	for _, element := range []int{0, 2} {
+		s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Sanitize
+		s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[element+0])
+		err := s.Checker.HandleConsecutiveForwardSlashes()
+		c.Assert(err, IsNil)
+		c.Assert(s.Checker.Name.String(), Equals, ConsecutiveForwardSlashesNames[element+1])
+	}
+}
 
 // func (s *ReferenceValidationSuite) TestValidateHandleTrailingDot(c *C) {
 // 	s.Checker.ActionOptions.HandleTrailingDot = Validate

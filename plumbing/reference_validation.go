@@ -35,7 +35,7 @@ var (
 	PatternExcludedCharacters        = regexp.MustCompile(`[\000-\037\177 ~^:?*[]+`)
 	PatternLeadingForwardSlash       = regexp.MustCompile(`^/`)
 	PatternTrailingForwardSlash      = regexp.MustCompile(`/$`)
-	PatternConsecutiveForwardSlashes = regexp.MustCompile(`//`)
+	PatternConsecutiveForwardSlashes = regexp.MustCompile(`//+`)
 	PatternTrailingDot               = regexp.MustCompile(`.$`)
 	PatternAtOpenBrace               = regexp.MustCompile(`@{`)
 )
@@ -161,14 +161,17 @@ func (v *RefNameChecker) HandleTrailingForwardSlash() error {
 }
 
 func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
-	switch v.ActionOptions.HandleConsecutiveForwardSlashes {
-	case Validate:
-		if PatternConsecutiveForwardSlashes.MatchString(v.Name.String()) {
-			return ErrRefConsecutiveForwardSlashes
+	if Skip == v.ActionOptions.HandleConsecutiveForwardSlashes {
+		return nil
+	}
+	if PatternConsecutiveForwardSlashes.MatchString(v.Name.String()) {
+		if Sanitize == v.ActionOptions.HandleConsecutiveForwardSlashes {
+			if v.CheckRefOptions.Normalize {
+				v.Name = ReferenceName(PatternConsecutiveForwardSlashes.ReplaceAllString(v.Name.String(), "/"))
+				return nil
+			}
 		}
-		break
-	case Sanitize:
-		v.Name = ReferenceName(PatternConsecutiveForwardSlashes.ReplaceAllString(v.Name.String(), ""))
+		return ErrRefConsecutiveForwardSlashes
 	}
 	return nil
 }

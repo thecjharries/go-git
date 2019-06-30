@@ -128,6 +128,7 @@ func (s *ReferenceSuite) TestReferenceNameFormat(c *C) {
 		old_name_method := NewReferenceName(ref_name_slice[0])
 
 		c.Assert(new_name_method.Name, Equals, old_name_method.Name)
+		c.Assert(new_name_method.String(), Equals, old_name_method.String())
 	}
 
 }

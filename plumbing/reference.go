@@ -55,8 +55,13 @@ func (r ReferenceType) String() string {
 	return ""
 }
 
-// ReferenceName reference name's
-type ReferenceName string
+// By using a function we can check the format
+func ReferenceName(name ...string) string {
+	if len(name) > 1 {
+		return Join(name, "/")
+	}
+	return name
+}
 
 // NewBranchReferenceName returns a reference name describing a branch based on
 // his short name.

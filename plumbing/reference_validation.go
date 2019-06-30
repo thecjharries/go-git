@@ -14,16 +14,16 @@ const (
 )
 
 var (
-	ErrRefLeadingDot                = errors.New("ref name cannot begin with .")
-	ErrRefTrailingLock              = errors.New("WIP pls Ignore")
-	ErrRefAtLeastOneForwardSlash    = errors.New("WIP pls Ignore")
-	ErrRefDoubleDots                = errors.New("WIP pls Ignore")
-	ErrRefExcludedCharacters        = errors.New("WIP pls Ignore")
-	ErrRefLeadingForwardSlash       = errors.New("WIP pls Ignore")
-	ErrRefTrailingForwardSlash      = errors.New("WIP pls Ignore")
-	ErrRefConsecutiveForwardSlashes = errors.New("WIP pls Ignore")
-	ErrRefTrailingDot               = errors.New("WIP pls Ignore")
-	ErrRefAtOpenBrace               = errors.New("WIP pls Ignore")
+	ErrRefLeadingDot                = errors.New("ref name cannot begin with a dot")
+	ErrRefTrailingLock              = errors.New("ref name cannot end with .lock")
+	ErrRefAtLeastOneForwardSlash    = errors.New("ref name must have at least one forward slash")
+	ErrRefDoubleDots                = errors.New("ref name cannot include two consecutive dots")
+	ErrRefExcludedCharacters        = errors.New("ref name cannot include many special characters")
+	ErrRefLeadingForwardSlash       = errors.New("ref name cannot start with a forward slash")
+	ErrRefTrailingForwardSlash      = errors.New("ref name cannot end with a forward slash")
+	ErrRefConsecutiveForwardSlashes = errors.New("ref name cannot have consectutive forward slashes")
+	ErrRefTrailingDot               = errors.New("ref name cannot end with a dot")
+	ErrRefAtOpenBrace               = errors.New("ref name cannot include at-open-brace")
 )
 
 var (

@@ -31,7 +31,16 @@ type RefNameChecker struct {
 	}
 
 	ActionOptions struct {
-		HandleLeadingPeriods ActionChoice
+		HandleLeadingPeriods            ActionChoice
+		HandleTrailingLock              ActionChoice
+		EnsureAtLeastOneForwardSlash    ActionChoice
+		HandleDoubleDots                ActionChoice
+		HandleExcludedCharacters        ActionChoice
+		HandleLeadingForwardSlash       ActionChoice
+		HandleTrailingForwardSlash      ActionChoice
+		HandleConsecutiveForwardSlashes ActionChoice
+		HandleTrailingDot               ActionChoice
+		HandleAtOpenBrace               ActionChoice
 	}
 
 	PostCheckInformation struct {

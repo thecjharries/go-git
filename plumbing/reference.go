@@ -56,7 +56,7 @@ func (r ReferenceType) String() string {
 }
 
 // By using a function we can check the format
-type ReferenceName struct{
+type ReferenceName struct {
 	Name string
 	Type ReferenceType
 }
@@ -67,7 +67,7 @@ func (rn ReferenceName) String() string {
 
 func NewReferenceName(name ...string) ReferenceName {
 	rn := &ReferenceName{}
-	if 1>len(name) {
+	if 1 > len(name) {
 		rn.Name = strings.Join(name, "/")
 	} else {
 		rn.Name = name[0]
@@ -80,7 +80,6 @@ func NewReferenceName(name ...string) ReferenceName {
 func NewBranchReferenceName(name string) ReferenceName {
 	return NewReferenceName(refHeadPrefix + name)
 }
-
 
 // NewNoteReferenceName returns a reference name describing a note based on his
 // short name.
@@ -141,8 +140,8 @@ func (r ReferenceName) Short() string {
 }
 
 var (
-	HEAD  = ReferenceName{Name:"HEAD"}
-	Master =ReferenceName{Name:"refs/heads/master"}
+	HEAD   = ReferenceName{Name: "HEAD"}
+	Master = ReferenceName{Name: "refs/heads/master"}
 )
 
 // Reference is a representation of git reference

@@ -195,13 +195,18 @@ func (s *ReferenceValidationSuite) TestValidateHandleConsecutiveForwardSlashes(c
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c *C) {
-	s.Checker.CheckRefOptions.Normalize = true
+
 	for _, element := range []int{0, 2} {
+		s.Checker.CheckRefOptions.Normalize = true
 		s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Sanitize
 		s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[element+0])
 		err := s.Checker.HandleConsecutiveForwardSlashes()
 		c.Assert(err, IsNil)
 		c.Assert(s.Checker.Name.String(), Equals, ConsecutiveForwardSlashesNames[element+1])
+		s.Checker.CheckRefOptions.Normalize = false
+		s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[element+0])
+		err = s.Checker.HandleConsecutiveForwardSlashes()
+		c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefConsecutiveForwardSlashes))
 	}
 }
 

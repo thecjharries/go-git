@@ -2,6 +2,8 @@ package plumbing
 
 import (
 	"errors"
+	"fmt"
+	"reflect"
 	"regexp"
 	"strings"
 )
@@ -9,9 +11,9 @@ import (
 type ActionChoice int
 
 const (
-	Validate ActionChoice = iota
-	Skip
+	Skip ActionChoice = iota
 	Sanitize
+	Validate
 )
 
 var (
@@ -63,12 +65,11 @@ type RefNameChecker struct {
 		HandleTrailingDot               ActionChoice
 		HandleAtOpenBrace               ActionChoice
 	}
-
-	PostCheckInformation struct {
-		HasBeenValidated  bool
-		HasBeenSanitizaed bool
-	}
 }
+
+type RefNameCheckerHandler func()error
+type RefNameCheckerHanders []RefNameCheckerHandler
+
 
 func (v *RefNameChecker) HandleLeadingDot() error {
 	switch v.ActionOptions.HandleLeadingDot {
@@ -205,6 +206,48 @@ func (v *RefNameChecker) HandleAtOpenBrace() error {
 		break
 	case Sanitize:
 		v.Name = ReferenceName(PatternAtOpenBrace.ReplaceAllString(v.Name.String(), ""))
+	}
+	return nil
+}
+
+func (v *RefNameChecker) BuildHandleList() RefNameCheckerHanders {
+	var handles []func()error
+	handles = append(handles, v.HandleLeadingDot)
+handles = append(handles, v.HandleTrailingLock)
+handles = append(handles, v.HandleAtLeastOneForwardSlash)
+handles = append(handles, v.HandleDoubleDots)
+handles = append(handles, v.HandleExcludedCharacters)
+handles = append(handles, v.HandleLeadingForwardSlash)
+handles = append(handles, v.HandleTrailingForwardSlash)
+handles = append(handles, v.HandleConsecutiveForwardSlashes)
+handles = append(handles, v.HandleTrailingDot)
+handles = append(handles, v.HandleAtOpenBrace)
+for _, handle := range handles {
+	handle()
+}
+return nil
+}
+
+
+
+func (v *RefNameChecker) CheckRefName() error {
+	return nil
+}
+
+func (v *RefNameChecker) CheckRefNameReflect() error {
+	v.ActionOptions.HandleLeadingDot = Validate
+	actions := reflect.ValueOf(v.ActionOptions)
+	for index := 0; index < actions.NumField(); index++ {
+		element := actions.Field(index)
+		if int64(Skip) != element.Int() {
+			func_name := actions.Type().Field(index).Name
+			function := reflect.ValueOf(v).MethodByName(func_name)
+			methodType := function.Type()
+			numIn := methodType.NumIn()
+			in := make([]reflect.Value,numIn)
+			err := function.Call(in)[0]
+			fmt.Println(err)
+		}
 	}
 	return nil
 }

@@ -356,3 +356,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleAtOpenBrace(c *C) {
 		c.Assert(err, IsNil)
 	}
 }
+
+func (s *ReferenceValidationSuite) TestCheckRefName(c *C) {
+	s.Checker.CheckRefName()
+}

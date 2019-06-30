@@ -2,8 +2,6 @@ package plumbing
 
 import (
 	"errors"
-	"fmt"
-	"reflect"
 	"regexp"
 	"strings"
 )
@@ -66,10 +64,6 @@ type RefNameChecker struct {
 		HandleAtOpenBrace               ActionChoice
 	}
 }
-
-type RefNameCheckerHandler func()error
-type RefNameCheckerHanders []RefNameCheckerHandler
-
 
 func (v *RefNameChecker) HandleLeadingDot() error {
 	switch v.ActionOptions.HandleLeadingDot {
@@ -210,44 +204,25 @@ func (v *RefNameChecker) HandleAtOpenBrace() error {
 	return nil
 }
 
-func (v *RefNameChecker) BuildHandleList() RefNameCheckerHanders {
-	var handles []func()error
-	handles = append(handles, v.HandleLeadingDot)
-handles = append(handles, v.HandleTrailingLock)
-handles = append(handles, v.HandleAtLeastOneForwardSlash)
-handles = append(handles, v.HandleDoubleDots)
-handles = append(handles, v.HandleExcludedCharacters)
-handles = append(handles, v.HandleLeadingForwardSlash)
-handles = append(handles, v.HandleTrailingForwardSlash)
-handles = append(handles, v.HandleConsecutiveForwardSlashes)
-handles = append(handles, v.HandleTrailingDot)
-handles = append(handles, v.HandleAtOpenBrace)
-for _, handle := range handles {
-	handle()
-}
-return nil
-}
-
-
-
 func (v *RefNameChecker) CheckRefName() error {
-	return nil
-}
-
-func (v *RefNameChecker) CheckRefNameReflect() error {
-	v.ActionOptions.HandleLeadingDot = Validate
-	actions := reflect.ValueOf(v.ActionOptions)
-	for index := 0; index < actions.NumField(); index++ {
-		element := actions.Field(index)
-		if int64(Skip) != element.Int() {
-			func_name := actions.Type().Field(index).Name
-			function := reflect.ValueOf(v).MethodByName(func_name)
-			methodType := function.Type()
-			numIn := methodType.NumIn()
-			in := make([]reflect.Value,numIn)
-			err := function.Call(in)[0]
-			fmt.Println(err)
+	handles := []func() error{
+		v.HandleLeadingDot,
+		v.HandleTrailingLock,
+		v.HandleAtLeastOneForwardSlash,
+		v.HandleDoubleDots,
+		v.HandleExcludedCharacters,
+		v.HandleLeadingForwardSlash,
+		v.HandleTrailingForwardSlash,
+		v.HandleConsecutiveForwardSlashes,
+		v.HandleTrailingDot,
+		v.HandleAtOpenBrace,
+	}
+	for _, handle := range handles {
+		err := handle()
+		if nil != err {
+			return err
 		}
 	}
+
 	return nil
 }

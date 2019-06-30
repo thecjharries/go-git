@@ -131,7 +131,7 @@ func (s *ReportStatus) decodeCommandStatus(b []byte) error {
 	}
 
 	cs := &CommandStatus{
-		ReferenceName: plumbing.ReferenceName(fields[1]),
+		ReferenceName: plumbing.NewReferenceName(fields[1]),
 		Status:        status,
 	}
 	s.CommandStatuses = append(s.CommandStatuses, cs)

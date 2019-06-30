@@ -9,8 +9,11 @@ import (
 type ActionChoice int
 
 const (
+	// This skips the check
 	SKIP ActionChoice = iota
+	// This removes the issue when possible
 	SANITIZE
+	// This throws an error and must be fixed
 	VALIDATE
 )
 
@@ -43,24 +46,51 @@ var (
 )
 
 type CheckRefOptions struct {
-	AllowOneLevel  bool
+	// They must contain at least one /
+	//  If the --allow-onelevel option is used, this rule is waived.
+	AllowOneLevel bool
+	// If this option is enabled, <refname> is allowed to contain a
+	// single * in the refspec
 	RefSpecPattern bool
-	Normalize      bool
+	// Normalize refname by removing any leading slash (/) characters and
+	// collapsing runs of adjacent slashes between name components into
+	// a single slash.
+	Normalize bool
 }
 
 type ActionOptions struct {
-	HandleLeadingDot                ActionChoice
-	HandleTrailingLock              ActionChoice
-	HandleAtLeastOneForwardSlash    ActionChoice
-	HandleDoubleDots                ActionChoice
-	HandleExcludedCharacters        ActionChoice
-	HandleLeadingForwardSlash       ActionChoice
-	HandleTrailingForwardSlash      ActionChoice
+
+	// no slash-separated component can begin with a dot .
+	HandleLeadingDot ActionChoice
+
+	// no slash-separated component can end with the sequence .lock
+	HandleTrailingLock ActionChoice
+	// They must contain at least one /.
+	HandleAtLeastOneForwardSlash ActionChoice
+	// They cannot have two consecutive dots .. anywhere.
+	HandleDoubleDots ActionChoice
+	// They cannot have ASCII control characters (i.e. bytes whose values
+	// are lower than \040, or \177 DEL), space, tilde ~, caret ^, or
+	// colon : anywhere.
+	// They cannot have question-mark ?, asterisk *, or open
+	// bracket [ anywhere
+	// They cannot contain a \
+	HandleExcludedCharacters ActionChoice
+	// They cannot begin or end with a slash /
+	HandleLeadingForwardSlash ActionChoice
+	// They cannot begin or end with a slash / or contain
+	// multiple consecutive slashes
+	HandleTrailingForwardSlash ActionChoice
+	// They cannot  contain multiple consecutive slashes
 	HandleConsecutiveForwardSlashes ActionChoice
-	HandleTrailingDot               ActionChoice
-	HandleAtOpenBrace               ActionChoice
+	// They cannot end with a dot .
+	HandleTrailingDot ActionChoice
+	// They cannot contain a sequence @{
+	HandleAtOpenBrace ActionChoice
 }
 
+// https://git-scm.com/docs/git-check-ref-format
+// git-check-ref-format
 type RefNameChecker struct {
 	Name            ReferenceName
 	CheckRefOptions CheckRefOptions

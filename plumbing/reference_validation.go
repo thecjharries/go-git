@@ -36,7 +36,7 @@ var (
 	PatternLeadingForwardSlash       = regexp.MustCompile(`^/`)
 	PatternTrailingForwardSlash      = regexp.MustCompile(`/$`)
 	PatternConsecutiveForwardSlashes = regexp.MustCompile(`//+`)
-	PatternTrailingDot               = regexp.MustCompile(`.$`)
+	PatternTrailingDot               = regexp.MustCompile(`\.$`)
 	PatternAtOpenBrace               = regexp.MustCompile(`@{`)
 )
 

@@ -210,23 +210,23 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c
 	}
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleTrailingDot(c *C) {
-// 	s.Checker.ActionOptions.HandleTrailingDot = Validate
-// 	s.Checker.Name = ReferenceName(TrailingDotNames[0])
-// 	err := s.Checker.HandleTrailingDot()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingDot))
-// 	s.Checker.Name = ReferenceName(TrailingDotNames[1])
-// 	err = s.Checker.HandleTrailingDot()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleTrailingDot(c *C) {
+	s.Checker.ActionOptions.HandleTrailingDot = Validate
+	s.Checker.Name = ReferenceName(TrailingDotNames[0])
+	err := s.Checker.HandleTrailingDot()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingDot))
+	s.Checker.Name = ReferenceName(TrailingDotNames[1])
+	err = s.Checker.HandleTrailingDot()
+	c.Assert(err, IsNil)
+}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingDot(c *C) {
-// 	s.Checker.ActionOptions.HandleTrailingDot = Sanitize
-// 	s.Checker.Name = ReferenceName(TrailingDotNames[0])
-// 	err := s.Checker.HandleTrailingDot()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, TrailingDotNames[1])
-// }
+func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingDot(c *C) {
+	s.Checker.ActionOptions.HandleTrailingDot = Sanitize
+	s.Checker.Name = ReferenceName(TrailingDotNames[0])
+	err := s.Checker.HandleTrailingDot()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, TrailingDotNames[1])
+}
 
 // func (s *ReferenceValidationSuite) TestValidateHandleAtOpenBrace(c *C) {
 // 	s.Checker.ActionOptions.HandleAtOpenBrace = Validate

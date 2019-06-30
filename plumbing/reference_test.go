@@ -82,20 +82,24 @@ func (s *ReferenceSuite) TestNewTagReferenceName(c *C) {
 func (s *ReferenceSuite) TestIsBranch(c *C) {
 	r := ExampleReferenceName
 	c.Assert(r.IsBranch(), Equals, true)
+	c.Assert(r.HasPrefix(refHeadPrefix), Equals, true)
 }
 
 func (s *ReferenceSuite) TestIsNote(c *C) {
 	r := NewReferenceName("refs/notes/foo")
+	c.Assert(r.HasPrefix(refNotePrefix), Equals, true)
 	c.Assert(r.IsNote(), Equals, true)
 }
 
 func (s *ReferenceSuite) TestIsRemote(c *C) {
 	r := NewReferenceName("refs/remotes/origin/master")
+	c.Assert(r.HasPrefix(refRemotePrefix), Equals, true)
 	c.Assert(r.IsRemote(), Equals, true)
 }
 
 func (s *ReferenceSuite) TestIsTag(c *C) {
 	r := NewReferenceName("refs/tags/v3.1.")
+	c.Assert(r.HasPrefix(refTagPrefix), Equals, true)
 	c.Assert(r.IsTag(), Equals, true)
 }
 

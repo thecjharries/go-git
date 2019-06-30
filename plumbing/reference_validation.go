@@ -42,26 +42,63 @@ var (
 	PatternOneAllowedAsterisk          = regexp.MustCompile(`^[^*]+?\*?[^*]+?$`)
 )
 
+type CheckRefOptions struct {
+	AllowOneLevel  bool
+	RefSpecPattern bool
+	Normalize      bool
+}
+
+type ActionOptions struct {
+	HandleLeadingDot                ActionChoice
+	HandleTrailingLock              ActionChoice
+	HandleAtLeastOneForwardSlash    ActionChoice
+	HandleDoubleDots                ActionChoice
+	HandleExcludedCharacters        ActionChoice
+	HandleLeadingForwardSlash       ActionChoice
+	HandleTrailingForwardSlash      ActionChoice
+	HandleConsecutiveForwardSlashes ActionChoice
+	HandleTrailingDot               ActionChoice
+	HandleAtOpenBrace               ActionChoice
+}
+
 type RefNameChecker struct {
-	Name ReferenceName
+	Name            ReferenceName
+	CheckRefOptions CheckRefOptions
+	ActionOptions   ActionOptions
+}
 
-	CheckRefOptions struct {
-		AllowOneLevel  bool
-		RefSpecPattern bool
-		Normalize      bool
+func NewCheckRefOptions(default_value bool) *CheckRefOptions {
+	return &CheckRefOptions{
+		AllowOneLevel:  default_value,
+		RefSpecPattern: default_value,
+		Normalize:      default_value,
 	}
+}
 
-	ActionOptions struct {
-		HandleLeadingDot                ActionChoice
-		HandleTrailingLock              ActionChoice
-		HandleAtLeastOneForwardSlash    ActionChoice
-		HandleDoubleDots                ActionChoice
-		HandleExcludedCharacters        ActionChoice
-		HandleLeadingForwardSlash       ActionChoice
-		HandleTrailingForwardSlash      ActionChoice
-		HandleConsecutiveForwardSlashes ActionChoice
-		HandleTrailingDot               ActionChoice
-		HandleAtOpenBrace               ActionChoice
+func NewActionOptions(default_value ActionChoice) *ActionOptions {
+	return &ActionOptions{
+		HandleLeadingDot:                default_value,
+		HandleTrailingLock:              default_value,
+		HandleAtLeastOneForwardSlash:    default_value,
+		HandleDoubleDots:                default_value,
+		HandleExcludedCharacters:        default_value,
+		HandleLeadingForwardSlash:       default_value,
+		HandleTrailingForwardSlash:      default_value,
+		HandleConsecutiveForwardSlashes: default_value,
+		HandleTrailingDot:               default_value,
+		HandleAtOpenBrace:               default_value,
+	}
+}
+
+func NewRefNameChecker(
+	name ReferenceName,
+	ref_options CheckRefOptions,
+	action_options ActionOptions,
+) *RefNameChecker {
+	return &RefNameChecker{
+		Name:            name,
+		CheckRefOptions: ref_options,
+		ActionOptions:   action_options,
 	}
 }
 

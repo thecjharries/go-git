@@ -140,8 +140,8 @@ func (r ReferenceName) Short() string {
 }
 
 var (
-	HEAD   = ReferenceName{Name: "HEAD"}
-	Master = ReferenceName{Name: "refs/heads/master"}
+	HEAD   = NewReferenceName("HEAD")
+	Master = NewReferenceName("refs/heads/master")
 )
 
 // Reference is a representation of git reference

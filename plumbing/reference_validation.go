@@ -52,3 +52,39 @@ func (v *RefNameChecker) HandleLeadingPeriods() error {
 	}
 	return nil
 }
+
+func (v *RefNameChecker) HandleTrailingLock() error {
+	return nil
+}
+
+func (v *RefNameChecker) EnsureAtLeastOneForwardSlash() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleDoubleDots() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleExcludedCharacters() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleLeadingForwardSlash() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleTrailingForwardSlash() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleTrailingDot() error {
+	return nil
+}
+
+func (v *RefNameChecker) HandleAtOpenBrace() error {
+	return nil
+}

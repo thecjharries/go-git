@@ -91,38 +91,38 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingLock(c *C) {
 
 func (s *ReferenceValidationSuite) TestValidateAtLeastOneForwardSlash(c *C) {
 	for _, setting := range []ActionChoice{Validate, Sanitize} {
-	s.Checker.CheckRefOptions.AllowOneLevel = false
-	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = setting
-	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
-	err := s.Checker.HandleAtLeastOneForwardSlash()
-	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtLeastOneForwardSlash))
-	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[1])
-	err = s.Checker.HandleAtLeastOneForwardSlash()
-	c.Assert(err, IsNil)
-	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
-	s.Checker.CheckRefOptions.AllowOneLevel = true
-	err = s.Checker.HandleAtLeastOneForwardSlash()
-	c.Assert(err, IsNil)
-}
+		s.Checker.CheckRefOptions.AllowOneLevel = false
+		s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = setting
+		s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
+		err := s.Checker.HandleAtLeastOneForwardSlash()
+		c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtLeastOneForwardSlash))
+		s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[1])
+		err = s.Checker.HandleAtLeastOneForwardSlash()
+		c.Assert(err, IsNil)
+		s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
+		s.Checker.CheckRefOptions.AllowOneLevel = true
+		err = s.Checker.HandleAtLeastOneForwardSlash()
+		c.Assert(err, IsNil)
+	}
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleDoubleDots(c *C) {
-// 	s.Checker.ActionOptions.HandleDoubleDots = Validate
-// 	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
-// 	err := s.Checker.HandleDoubleDots()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefDoubleDots))
-// 	s.Checker.Name = ReferenceName(DoubleDotsNames[1])
-// 	err = s.Checker.HandleDoubleDots()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleDoubleDots(c *C) {
+	s.Checker.ActionOptions.HandleDoubleDots = Validate
+	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
+	err := s.Checker.HandleDoubleDots()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefDoubleDots))
+	s.Checker.Name = ReferenceName(DoubleDotsNames[1])
+	err = s.Checker.HandleDoubleDots()
+	c.Assert(err, IsNil)
+}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleDoubleDots(c *C) {
-// 	s.Checker.ActionOptions.HandleDoubleDots = Sanitize
-// 	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
-// 	err := s.Checker.HandleDoubleDots()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, DoubleDotsNames[1])
-// }
+func (s *ReferenceValidationSuite) TestSanitizeHandleDoubleDots(c *C) {
+	s.Checker.ActionOptions.HandleDoubleDots = Sanitize
+	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
+	err := s.Checker.HandleDoubleDots()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, DoubleDotsNames[1])
+}
 
 // func (s *ReferenceValidationSuite) TestValidateHandleExcludedCharacters(c *C) {
 // 	s.Checker.ActionOptions.HandleExcludedCharacters = Validate

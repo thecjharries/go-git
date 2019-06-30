@@ -73,6 +73,16 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingDot(c *C) {
 	c.Assert(err, IsNil)
 	c.Assert(s.Checker.Name.String(), Equals, LeadingDotNames[1])
 }
+
+func (s *ReferenceValidationSuite) TestSkipHandleLeadingDot(c *C) {
+	s.Checker.ActionOptions.HandleLeadingDot = Skip
+	for _, name := range LeadingDotNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleLeadingDot()
+		c.Assert(err, IsNil)
+	}
+}
+
 func (s *ReferenceValidationSuite) TestValidateHandleTrailingLock(c *C) {
 	s.Checker.ActionOptions.HandleTrailingLock = Validate
 	s.Checker.Name = ReferenceName(TrailingLockNames[0])
@@ -81,6 +91,15 @@ func (s *ReferenceValidationSuite) TestValidateHandleTrailingLock(c *C) {
 	s.Checker.Name = ReferenceName(TrailingLockNames[1])
 	err = s.Checker.HandleTrailingLock()
 	c.Assert(err, IsNil)
+}
+
+func (s *ReferenceValidationSuite) TestSkipHandleTrailingLock(c *C) {
+	s.Checker.ActionOptions.HandleTrailingLock = Skip
+	for _, name := range TrailingLockNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleTrailingLock()
+		c.Assert(err, IsNil)
+	}
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingLock(c *C) {
@@ -108,6 +127,15 @@ func (s *ReferenceValidationSuite) TestValidateAtLeastOneForwardSlash(c *C) {
 	}
 }
 
+func (s *ReferenceValidationSuite) TestSkipHandleAtLeastOneForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = Skip
+	for _, name := range AtLeastOneForwardSlashNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleAtLeastOneForwardSlash()
+		c.Assert(err, IsNil)
+	}
+}
+
 func (s *ReferenceValidationSuite) TestValidateHandleDoubleDots(c *C) {
 	s.Checker.ActionOptions.HandleDoubleDots = Validate
 	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
@@ -124,6 +152,15 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleDoubleDots(c *C) {
 	err := s.Checker.HandleDoubleDots()
 	c.Assert(err, IsNil)
 	c.Assert(s.Checker.Name.String(), Equals, DoubleDotsNames[1])
+}
+
+func (s *ReferenceValidationSuite) TestSkipHandleDoubleDots(c *C) {
+	s.Checker.ActionOptions.HandleDoubleDots = Skip
+	for _, name := range DoubleDotsNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleDoubleDots()
+		c.Assert(err, IsNil)
+	}
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleExcludedCharacters(c *C) {
@@ -144,6 +181,15 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[1])
 }
 
+func (s *ReferenceValidationSuite) TestSkipHandleExcludedCharacters(c *C) {
+	s.Checker.ActionOptions.HandleExcludedCharacters = Skip
+	for _, name := range ExcludedCharactersNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleExcludedCharacters()
+		c.Assert(err, IsNil)
+	}
+}
+
 func (s *ReferenceValidationSuite) TestValidateHandleLeadingForwardSlash(c *C) {
 	s.Checker.ActionOptions.HandleLeadingForwardSlash = Validate
 	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
@@ -162,6 +208,15 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingForwardSlash(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, LeadingForwardSlashNames[1])
 }
 
+func (s *ReferenceValidationSuite) TestSkipHandleLeadingForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleLeadingForwardSlash = Skip
+	for _, name := range LeadingForwardSlashNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleLeadingForwardSlash()
+		c.Assert(err, IsNil)
+	}
+}
+
 func (s *ReferenceValidationSuite) TestValidateHandleTrailingForwardSlash(c *C) {
 	s.Checker.ActionOptions.HandleTrailingForwardSlash = Validate
 	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
@@ -178,6 +233,15 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingForwardSlash(c *C) 
 	err := s.Checker.HandleTrailingForwardSlash()
 	c.Assert(err, IsNil)
 	c.Assert(s.Checker.Name.String(), Equals, TrailingForwardSlashNames[1])
+}
+
+func (s *ReferenceValidationSuite) TestSkipHandleTrailingForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleTrailingForwardSlash = Skip
+	for _, name := range TrailingForwardSlashNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleTrailingForwardSlash()
+		c.Assert(err, IsNil)
+	}
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleConsecutiveForwardSlashes(c *C) {
@@ -210,6 +274,15 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c
 	}
 }
 
+func (s *ReferenceValidationSuite) TestSkipHandleConsecutiveForwardSlashes(c *C) {
+	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Skip
+	for _, name := range ConsecutiveForwardSlashesNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleConsecutiveForwardSlashes()
+		c.Assert(err, IsNil)
+	}
+}
+
 func (s *ReferenceValidationSuite) TestValidateHandleTrailingDot(c *C) {
 	s.Checker.ActionOptions.HandleTrailingDot = Validate
 	s.Checker.Name = ReferenceName(TrailingDotNames[0])
@@ -228,6 +301,15 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingDot(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, TrailingDotNames[1])
 }
 
+func (s *ReferenceValidationSuite) TestSkipHandleTrailingDot(c *C) {
+	s.Checker.ActionOptions.HandleTrailingDot = Skip
+	for _, name := range TrailingDotNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleTrailingDot()
+		c.Assert(err, IsNil)
+	}
+}
+
 func (s *ReferenceValidationSuite) TestValidateHandleAtOpenBrace(c *C) {
 	s.Checker.ActionOptions.HandleAtOpenBrace = Validate
 	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
@@ -244,4 +326,13 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleAtOpenBrace(c *C) {
 	err := s.Checker.HandleAtOpenBrace()
 	c.Assert(err, IsNil)
 	c.Assert(s.Checker.Name.String(), Equals, AtOpenBraceNames[1])
+}
+
+func (s *ReferenceValidationSuite) TestSkipHandleAtOpenBrace(c *C) {
+	s.Checker.ActionOptions.HandleAtOpenBrace = Skip
+	for _, name := range AtOpenBraceNames {
+		s.Checker.Name = ReferenceName(name)
+		err := s.Checker.HandleAtOpenBrace()
+		c.Assert(err, IsNil)
+	}
 }

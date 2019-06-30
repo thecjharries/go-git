@@ -67,7 +67,7 @@ func (rn ReferenceName) String() string {
 
 func NewReferenceName(name ...string) ReferenceName {
 	rn := &ReferenceName{}
-	if 1 > len(name) {
+	if 1 < len(name) {
 		rn.Name = strings.Join(name, "/")
 	} else {
 		rn.Name = name[0]

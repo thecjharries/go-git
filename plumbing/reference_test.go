@@ -98,3 +98,36 @@ func (s *ReferenceSuite) TestIsTag(c *C) {
 	r := NewReferenceName("refs/tags/v3.1.")
 	c.Assert(r.IsTag(), Equals, true)
 }
+
+var (
+	RefNames = [][]string{
+		[]string{
+			"origin/master",
+			"origin",
+			"master",
+		},
+		[]string{
+			"remotes/origin/master",
+			"remotes",
+			"origin",
+			"master",
+		},
+		[]string{
+			"refs/remotes/origin/master",
+			"refs",
+			"remotes",
+			"origin",
+			"master",
+		},
+	}
+)
+
+func (s *ReferenceSuite) TestReferenceNameFormat(c *C) {
+	for _, ref_name_slice := range RefNames {
+		new_name_method := NewReferenceName(ref_name_slice[1:]...)
+		old_name_method := NewReferenceName(ref_name_slice[0])
+
+		c.Assert(new_name_method.Name, Equals, old_name_method.Name)
+	}
+
+}

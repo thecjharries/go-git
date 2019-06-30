@@ -55,12 +55,26 @@ func (r ReferenceType) String() string {
 	return ""
 }
 
+
+
 // By using a function we can check the format
-func ReferenceName(name ...string) string {
-	if len(name) > 1 {
-		return Join(name, "/")
+type ReferenceName struct{
+	Name string
+	Type ReferenceType
+}
+
+func (rn *ReferenceName) String() string {
+	return rn.Name
+}
+
+func NewReferenceName(name ...string) ReferenceName {
+	rn := &ReferenceName{}
+	if 1>len(name) {
+		rn.Name = strings.Join(name, "/")
+	} else {
+		rn.Name = name[0]
 	}
-	return name
+	return *rn
 }
 
 // NewBranchReferenceName returns a reference name describing a branch based on

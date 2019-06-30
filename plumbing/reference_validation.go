@@ -28,15 +28,15 @@ var (
 
 var (
 	PatternLeadingDot                = regexp.MustCompile(`^\.`)
-	PatternTrailingLock              = regexp.MustCompile(`^$`)
-	PatternAtLeastOneForwardSlash    = regexp.MustCompile(`^$`)
-	PatternDoubleDots                = regexp.MustCompile(`^$`)
-	PatternExcludedCharacters        = regexp.MustCompile(`^$`)
-	PatternLeadingForwardSlash       = regexp.MustCompile(`^$`)
-	PatternTrailingForwardSlash      = regexp.MustCompile(`^$`)
-	PatternConsecutiveForwardSlashes = regexp.MustCompile(`^$`)
-	PatternTrailingDot               = regexp.MustCompile(`^$`)
-	PatternAtOpenBrace               = regexp.MustCompile(`^$`)
+	PatternTrailingLock              = regexp.MustCompile(`\.lock$`)
+	PatternAtLeastOneForwardSlash    = regexp.MustCompile(`^[^/]+$`)
+	PatternDoubleDots                = regexp.MustCompile(`\.\.`)
+	PatternExcludedCharacters        = regexp.MustCompile(`[\000-\037\177 ~^:?*[]+`)
+	PatternLeadingForwardSlash       = regexp.MustCompile(`^/`)
+	PatternTrailingForwardSlash      = regexp.MustCompile(`/$`)
+	PatternConsecutiveForwardSlashes = regexp.MustCompile(`//`)
+	PatternTrailingDot               = regexp.MustCompile(`.$`)
+	PatternAtOpenBrace               = regexp.MustCompile(`@{`)
 )
 
 type RefNameChecker struct {
@@ -91,7 +91,6 @@ func (v *RefNameChecker) HandleTrailingLock() error {
 		v.Name = ReferenceName(PatternTrailingLock.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
@@ -105,7 +104,6 @@ func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
 		v.Name = ReferenceName(PatternAtLeastOneForwardSlash.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleDoubleDots() error {
@@ -119,7 +117,6 @@ func (v *RefNameChecker) HandleDoubleDots() error {
 		v.Name = ReferenceName(PatternDoubleDots.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleExcludedCharacters() error {
@@ -133,7 +130,6 @@ func (v *RefNameChecker) HandleExcludedCharacters() error {
 		v.Name = ReferenceName(PatternExcludedCharacters.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleLeadingForwardSlash() error {
@@ -147,7 +143,6 @@ func (v *RefNameChecker) HandleLeadingForwardSlash() error {
 		v.Name = ReferenceName(PatternLeadingForwardSlash.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleTrailingForwardSlash() error {
@@ -161,7 +156,6 @@ func (v *RefNameChecker) HandleTrailingForwardSlash() error {
 		v.Name = ReferenceName(PatternTrailingForwardSlash.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
@@ -175,7 +169,6 @@ func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
 		v.Name = ReferenceName(PatternConsecutiveForwardSlashes.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleTrailingDot() error {
@@ -189,7 +182,6 @@ func (v *RefNameChecker) HandleTrailingDot() error {
 		v.Name = ReferenceName(PatternTrailingDot.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }
 
 func (v *RefNameChecker) HandleAtOpenBrace() error {
@@ -203,5 +195,4 @@ func (v *RefNameChecker) HandleAtOpenBrace() error {
 		v.Name = ReferenceName(PatternAtOpenBrace.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
-
 }

@@ -228,20 +228,20 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingDot(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, TrailingDotNames[1])
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleAtOpenBrace(c *C) {
-// 	s.Checker.ActionOptions.HandleAtOpenBrace = Validate
-// 	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
-// 	err := s.Checker.HandleAtOpenBrace()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtOpenBrace))
-// 	s.Checker.Name = ReferenceName(AtOpenBraceNames[1])
-// 	err = s.Checker.HandleAtOpenBrace()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleAtOpenBrace(c *C) {
+	s.Checker.ActionOptions.HandleAtOpenBrace = Validate
+	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
+	err := s.Checker.HandleAtOpenBrace()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtOpenBrace))
+	s.Checker.Name = ReferenceName(AtOpenBraceNames[1])
+	err = s.Checker.HandleAtOpenBrace()
+	c.Assert(err, IsNil)
+}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleAtOpenBrace(c *C) {
-// 	s.Checker.ActionOptions.HandleAtOpenBrace = Sanitize
-// 	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
-// 	err := s.Checker.HandleAtOpenBrace()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, AtOpenBraceNames[1])
-// }
+func (s *ReferenceValidationSuite) TestSanitizeHandleAtOpenBrace(c *C) {
+	s.Checker.ActionOptions.HandleAtOpenBrace = Sanitize
+	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
+	err := s.Checker.HandleAtOpenBrace()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, AtOpenBraceNames[1])
+}

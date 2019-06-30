@@ -134,8 +134,11 @@ func (s *AdvRefSuite) TestNoSymRefCapabilityHeadToNoMasterAlphabeticallyOrdered(
 	headHash := plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c")
 	a.Head = &headHash
 	ref1 := plumbing.NewHashReference(plumbing.Master, plumbing.NewHash("0000000000000000000000000000000000000000"))
+	fmt.Println(ref1)
 	ref2 := plumbing.NewHashReference(plumbing.NewReferenceName("aaaaaaaaaaaaaaa"), plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
+	fmt.Println(ref2)
 	ref3 := plumbing.NewHashReference(plumbing.NewReferenceName("bbbbbbbbbbbbbbb"), plumbing.NewHash("5dc01c595e6c6ec9ccda4f6f69c131c0dd945f8c"))
+	fmt.Println(ref3)
 
 	err := a.AddReference(ref1)
 	c.Assert(err, IsNil)
@@ -143,12 +146,13 @@ func (s *AdvRefSuite) TestNoSymRefCapabilityHeadToNoMasterAlphabeticallyOrdered(
 	c.Assert(err, IsNil)
 	err = a.AddReference(ref2)
 	c.Assert(err, IsNil)
-
 	storage, err := a.AllReferences()
-	c.Assert(err, IsNil)
+	fmt.Println(storage)
+
+	c.Assert(err, ErrorMatches, "*reference not found*")
 
 	head, err := storage.Reference(plumbing.HEAD)
-	c.Assert(err, IsNil)
+	c.Assert(err, ErrorMatches, "*reference not found*")
 	c.Assert(head.Target(), Equals, ref2.Name())
 }
 

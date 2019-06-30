@@ -116,7 +116,7 @@ func (s RefSpec) Dst(n plumbing.ReferenceName) plumbing.ReferenceName {
 	src := s.Src()
 
 	if !s.IsWildcard() {
-		return plumbing.ReferenceName(dst)
+		return plumbing.NewReferenceName(dst)
 	}
 
 	name := n.String()
@@ -124,7 +124,7 @@ func (s RefSpec) Dst(n plumbing.ReferenceName) plumbing.ReferenceName {
 	wd := strings.Index(dst, refSpecWildcard)
 	match := name[ws : len(name)-(len(src)-(ws+1))]
 
-	return plumbing.ReferenceName(dst[0:wd] + match + dst[wd+1:])
+	return plumbing.NewReferenceName(dst[0:wd] + match + dst[wd+1:])
 }
 
 func (s RefSpec) String() string {

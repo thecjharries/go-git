@@ -77,22 +77,22 @@ func (s *RefSpecSuite) TestRefSpecSrc(c *C) {
 
 func (s *RefSpecSuite) TestRefSpecMatch(c *C) {
 	spec := RefSpec("refs/heads/master:refs/remotes/origin/master")
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/foo")), Equals, false)
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/master")), Equals, true)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/foo")), Equals, false)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/master")), Equals, true)
 
 	spec = RefSpec("+refs/heads/master:refs/remotes/origin/master")
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/foo")), Equals, false)
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/master")), Equals, true)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/foo")), Equals, false)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/master")), Equals, true)
 
 	spec = RefSpec(":refs/heads/master")
-	c.Assert(spec.Match(plumbing.ReferenceName("")), Equals, true)
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/master")), Equals, false)
+	c.Assert(spec.Match(plumbing.NewReferenceName("")), Equals, true)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/master")), Equals, false)
 
 	spec = RefSpec("refs/heads/love+hate:heads/love+hate")
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/love+hate")), Equals, true)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/love+hate")), Equals, true)
 
 	spec = RefSpec("+refs/heads/love+hate:heads/love+hate")
-	c.Assert(spec.Match(plumbing.ReferenceName("refs/heads/love+hate")), Equals, true)
+	c.Assert(spec.Match(plumbing.NewReferenceName("refs/heads/love+hate")), Equals, true)
 }
 
 func (s *RefSpecSuite) TestRefSpecMatchGlob(c *C) {
@@ -121,7 +121,7 @@ func (s *RefSpecSuite) TestRefSpecMatchGlob(c *C) {
 	for specStr, data := range tests {
 		spec := RefSpec(specStr)
 		for ref, matches := range data {
-			c.Assert(spec.Match(plumbing.ReferenceName(ref)),
+			c.Assert(spec.Match(plumbing.NewReferenceName(ref)),
 				Equals,
 				matches,
 				Commentf("while matching spec %q against ref %q", specStr, ref),
@@ -133,7 +133,7 @@ func (s *RefSpecSuite) TestRefSpecMatchGlob(c *C) {
 func (s *RefSpecSuite) TestRefSpecDst(c *C) {
 	spec := RefSpec("refs/heads/master:refs/remotes/origin/master")
 	c.Assert(
-		spec.Dst(plumbing.ReferenceName("refs/heads/master")).String(), Equals,
+		spec.Dst(plumbing.NewReferenceName("refs/heads/master")).String(), Equals,
 		"refs/remotes/origin/master",
 	)
 }
@@ -160,7 +160,7 @@ func (s *RefSpecSuite) TestRefSpecDstBlob(c *C) {
 
 	for specStr, dst := range tests {
 		spec := RefSpec(specStr)
-		c.Assert(spec.Dst(plumbing.ReferenceName(ref)).String(),
+		c.Assert(spec.Dst(plumbing.NewReferenceName(ref)).String(),
 			Equals,
 			dst,
 			Commentf("while getting dst from spec %q with ref %q", specStr, ref),
@@ -173,7 +173,7 @@ func (s *RefSpecSuite) TestMatchAny(c *C) {
 		"refs/heads/foo:refs/remotes/origin/bar",
 	}
 
-	c.Assert(MatchAny(specs, plumbing.ReferenceName("refs/heads/foo")), Equals, true)
-	c.Assert(MatchAny(specs, plumbing.ReferenceName("refs/heads/bar")), Equals, true)
-	c.Assert(MatchAny(specs, plumbing.ReferenceName("refs/heads/master")), Equals, false)
+	c.Assert(MatchAny(specs, plumbing.NewReferenceName("refs/heads/foo")), Equals, true)
+	c.Assert(MatchAny(specs, plumbing.NewReferenceName("refs/heads/bar")), Equals, true)
+	c.Assert(MatchAny(specs, plumbing.NewReferenceName("refs/heads/master")), Equals, false)
 }

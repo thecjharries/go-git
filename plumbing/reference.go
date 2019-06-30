@@ -79,6 +79,10 @@ func (rn *ReferenceName) HasPrefix(pattern string) bool {
 	return strings.HasPrefix(rn.Name, pattern)
 }
 
+func (rn *ReferenceName) IsNotEmpty() bool {
+	return "" != rn.Name
+}
+
 // NewBranchReferenceName returns a reference name describing a branch based on
 // his short name.
 func NewBranchReferenceName(name string) ReferenceName {

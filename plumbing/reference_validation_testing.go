@@ -142,23 +142,23 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, ExcludedCharactersNames[1])
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleLeadingForwardSlash(c *C) {
-// 	s.Checker.ActionOptions.HandleLeadingForwardSlash = Validate
-// 	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
-// 	err := s.Checker.HandleLeadingForwardSlash()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefLeadingForwardSlash))
-// 	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[1])
-// 	err = s.Checker.HandleLeadingForwardSlash()
-// 	c.Assert(err, IsNil)
-// }
+func (s *ReferenceValidationSuite) TestValidateHandleLeadingForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleLeadingForwardSlash = Validate
+	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
+	err := s.Checker.HandleLeadingForwardSlash()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefLeadingForwardSlash))
+	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[1])
+	err = s.Checker.HandleLeadingForwardSlash()
+	c.Assert(err, IsNil)
+}
 
-// func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingForwardSlash(c *C) {
-// 	s.Checker.ActionOptions.HandleLeadingForwardSlash = Sanitize
-// 	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
-// 	err := s.Checker.HandleLeadingForwardSlash()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, LeadingForwardSlashNames[1])
-// }
+func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingForwardSlash(c *C) {
+	s.Checker.ActionOptions.HandleLeadingForwardSlash = Sanitize
+	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
+	err := s.Checker.HandleLeadingForwardSlash()
+	c.Assert(err, IsNil)
+	c.Assert(s.Checker.Name.String(), Equals, LeadingForwardSlashNames[1])
+}
 
 // func (s *ReferenceValidationSuite) TestValidateHandleTrailingForwardSlash(c *C) {
 // 	s.Checker.ActionOptions.HandleTrailingForwardSlash = Validate

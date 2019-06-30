@@ -21,7 +21,7 @@ var (
 		"a/name",
 	}
 	AtLeastOneForwardSlashNames = []string{
-		".a/name",
+		"aname",
 		"a/name",
 	}
 	DoubleDotsNames = []string{
@@ -89,23 +89,22 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingLock(c *C) {
 	c.Assert(s.Checker.Name.String(), Equals, TrailingLockNames[1])
 }
 
-// func (s *ReferenceValidationSuite) TestValidateHandleAtLeastOneForwardSlash(c *C) {
-// 	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = Validate
-// 	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
-// 	err := s.Checker.HandleAtLeastOneForwardSlash()
-// 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtLeastOneForwardSlash))
-// 	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[1])
-// 	err = s.Checker.HandleAtLeastOneForwardSlash()
-// 	c.Assert(err, IsNil)
-// }
-
-// func (s *ReferenceValidationSuite) TestSanitizeHandleAtLeastOneForwardSlash(c *C) {
-// 	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = Sanitize
-// 	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
-// 	err := s.Checker.HandleAtLeastOneForwardSlash()
-// 	c.Assert(err, IsNil)
-// 	c.Assert(s.Checker.Name.String(), Equals, AtLeastOneForwardSlashNames[1])
-// }
+func (s *ReferenceValidationSuite) TestValidateAtLeastOneForwardSlash(c *C) {
+	for _, setting := range []ActionChoice{Validate, Sanitize} {
+	s.Checker.CheckRefOptions.AllowOneLevel = false
+	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = setting
+	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
+	err := s.Checker.HandleAtLeastOneForwardSlash()
+	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtLeastOneForwardSlash))
+	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[1])
+	err = s.Checker.HandleAtLeastOneForwardSlash()
+	c.Assert(err, IsNil)
+	s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
+	s.Checker.CheckRefOptions.AllowOneLevel = true
+	err = s.Checker.HandleAtLeastOneForwardSlash()
+	c.Assert(err, IsNil)
+}
+}
 
 // func (s *ReferenceValidationSuite) TestValidateHandleDoubleDots(c *C) {
 // 	s.Checker.ActionOptions.HandleDoubleDots = Validate

@@ -3,6 +3,7 @@ package plumbing
 import (
 	"errors"
 	"regexp"
+	"strings"
 )
 
 type ActionChoice int
@@ -94,14 +95,15 @@ func (v *RefNameChecker) HandleTrailingLock() error {
 }
 
 func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
-	switch v.ActionOptions.HandleAtLeastOneForwardSlash {
-	case Validate:
-		if PatternAtLeastOneForwardSlash.MatchString(v.Name.String()) {
-			return ErrRefAtLeastOneForwardSlash
+	if Skip == v.ActionOptions.HandleAtLeastOneForwardSlash {
+		return nil
+	}
+	count := strings.Count(v.Name.String(), "/")
+	if 1 > count {
+		if v.CheckRefOptions.AllowOneLevel {
+			return nil
 		}
-		break
-	case Sanitize:
-		v.Name = ReferenceName(PatternAtLeastOneForwardSlash.ReplaceAllString(v.Name.String(), ""))
+		return ErrRefAtLeastOneForwardSlash
 	}
 	return nil
 }

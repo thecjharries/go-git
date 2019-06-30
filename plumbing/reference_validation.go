@@ -9,9 +9,9 @@ import (
 type ActionChoice int
 
 const (
-	Skip ActionChoice = iota
-	Sanitize
-	Validate
+	SKIP ActionChoice = iota
+	SANITIZE
+	VALIDATE
 )
 
 var (
@@ -67,12 +67,12 @@ type RefNameChecker struct {
 
 func (v *RefNameChecker) HandleLeadingDot() error {
 	switch v.ActionOptions.HandleLeadingDot {
-	case Validate:
+	case VALIDATE:
 		if PatternLeadingDot.MatchString(v.Name.String()) {
 			return ErrRefLeadingDot
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternLeadingDot.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
@@ -80,19 +80,19 @@ func (v *RefNameChecker) HandleLeadingDot() error {
 
 func (v *RefNameChecker) HandleTrailingLock() error {
 	switch v.ActionOptions.HandleTrailingLock {
-	case Validate:
+	case VALIDATE:
 		if PatternTrailingLock.MatchString(v.Name.String()) {
 			return ErrRefTrailingLock
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternTrailingLock.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
 }
 
 func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
-	if Skip == v.ActionOptions.HandleAtLeastOneForwardSlash {
+	if SKIP == v.ActionOptions.HandleAtLeastOneForwardSlash {
 		return nil
 	}
 	count := strings.Count(v.Name.String(), "/")
@@ -107,12 +107,12 @@ func (v *RefNameChecker) HandleAtLeastOneForwardSlash() error {
 
 func (v *RefNameChecker) HandleDoubleDots() error {
 	switch v.ActionOptions.HandleDoubleDots {
-	case Validate:
+	case VALIDATE:
 		if PatternDoubleDots.MatchString(v.Name.String()) {
 			return ErrRefDoubleDots
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternDoubleDots.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
@@ -120,12 +120,12 @@ func (v *RefNameChecker) HandleDoubleDots() error {
 
 func (v *RefNameChecker) HandleExcludedCharacters() error {
 	switch v.ActionOptions.HandleExcludedCharacters {
-	case Validate:
+	case VALIDATE:
 		if PatternExcludedCharacters.MatchString(v.Name.String()) {
 			return ErrRefExcludedCharacters
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		if v.CheckRefOptions.RefSpecPattern && PatternOneAllowedAsterisk.MatchString(v.Name.String()) {
 			v.Name = ReferenceName(PatternExcludedCharactersAlternate.ReplaceAllString(v.Name.String(), ""))
 
@@ -138,12 +138,12 @@ func (v *RefNameChecker) HandleExcludedCharacters() error {
 
 func (v *RefNameChecker) HandleLeadingForwardSlash() error {
 	switch v.ActionOptions.HandleLeadingForwardSlash {
-	case Validate:
+	case VALIDATE:
 		if PatternLeadingForwardSlash.MatchString(v.Name.String()) {
 			return ErrRefLeadingForwardSlash
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternLeadingForwardSlash.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
@@ -151,23 +151,23 @@ func (v *RefNameChecker) HandleLeadingForwardSlash() error {
 
 func (v *RefNameChecker) HandleTrailingForwardSlash() error {
 	switch v.ActionOptions.HandleTrailingForwardSlash {
-	case Validate:
+	case VALIDATE:
 		if PatternTrailingForwardSlash.MatchString(v.Name.String()) {
 			return ErrRefTrailingForwardSlash
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternTrailingForwardSlash.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
 }
 
 func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
-	if Skip == v.ActionOptions.HandleConsecutiveForwardSlashes {
+	if SKIP == v.ActionOptions.HandleConsecutiveForwardSlashes {
 		return nil
 	}
 	if PatternConsecutiveForwardSlashes.MatchString(v.Name.String()) {
-		if Sanitize == v.ActionOptions.HandleConsecutiveForwardSlashes {
+		if SANITIZE == v.ActionOptions.HandleConsecutiveForwardSlashes {
 			if v.CheckRefOptions.Normalize {
 				v.Name = ReferenceName(PatternConsecutiveForwardSlashes.ReplaceAllString(v.Name.String(), "/"))
 				return nil
@@ -180,12 +180,12 @@ func (v *RefNameChecker) HandleConsecutiveForwardSlashes() error {
 
 func (v *RefNameChecker) HandleTrailingDot() error {
 	switch v.ActionOptions.HandleTrailingDot {
-	case Validate:
+	case VALIDATE:
 		if PatternTrailingDot.MatchString(v.Name.String()) {
 			return ErrRefTrailingDot
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternTrailingDot.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
@@ -193,12 +193,12 @@ func (v *RefNameChecker) HandleTrailingDot() error {
 
 func (v *RefNameChecker) HandleAtOpenBrace() error {
 	switch v.ActionOptions.HandleAtOpenBrace {
-	case Validate:
+	case VALIDATE:
 		if PatternAtOpenBrace.MatchString(v.Name.String()) {
 			return ErrRefAtOpenBrace
 		}
 		break
-	case Sanitize:
+	case SANITIZE:
 		v.Name = ReferenceName(PatternAtOpenBrace.ReplaceAllString(v.Name.String(), ""))
 	}
 	return nil
@@ -223,6 +223,5 @@ func (v *RefNameChecker) CheckRefName() error {
 			return err
 		}
 	}
-
 	return nil
 }

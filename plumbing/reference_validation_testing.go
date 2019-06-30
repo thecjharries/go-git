@@ -60,7 +60,7 @@ var (
 )
 
 func (s *ReferenceValidationSuite) TestValidateHandleLeadingDot(c *C) {
-	s.Checker.ActionOptions.HandleLeadingDot = Validate
+	s.Checker.ActionOptions.HandleLeadingDot = VALIDATE
 	s.Checker.Name = ReferenceName(LeadingDotNames[0])
 	err := s.Checker.HandleLeadingDot()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefLeadingDot))
@@ -70,7 +70,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleLeadingDot(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingDot(c *C) {
-	s.Checker.ActionOptions.HandleLeadingDot = Sanitize
+	s.Checker.ActionOptions.HandleLeadingDot = SANITIZE
 	s.Checker.Name = ReferenceName(LeadingDotNames[0])
 	err := s.Checker.HandleLeadingDot()
 	c.Assert(err, IsNil)
@@ -78,7 +78,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingDot(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleLeadingDot(c *C) {
-	s.Checker.ActionOptions.HandleLeadingDot = Skip
+	s.Checker.ActionOptions.HandleLeadingDot = SKIP
 	for _, name := range LeadingDotNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleLeadingDot()
@@ -87,7 +87,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleLeadingDot(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleTrailingLock(c *C) {
-	s.Checker.ActionOptions.HandleTrailingLock = Validate
+	s.Checker.ActionOptions.HandleTrailingLock = VALIDATE
 	s.Checker.Name = ReferenceName(TrailingLockNames[0])
 	err := s.Checker.HandleTrailingLock()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingLock))
@@ -97,7 +97,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleTrailingLock(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleTrailingLock(c *C) {
-	s.Checker.ActionOptions.HandleTrailingLock = Skip
+	s.Checker.ActionOptions.HandleTrailingLock = SKIP
 	for _, name := range TrailingLockNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleTrailingLock()
@@ -106,7 +106,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleTrailingLock(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingLock(c *C) {
-	s.Checker.ActionOptions.HandleTrailingLock = Sanitize
+	s.Checker.ActionOptions.HandleTrailingLock = SANITIZE
 	s.Checker.Name = ReferenceName(TrailingLockNames[0])
 	err := s.Checker.HandleTrailingLock()
 	c.Assert(err, IsNil)
@@ -114,7 +114,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingLock(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateAtLeastOneForwardSlash(c *C) {
-	for _, setting := range []ActionChoice{Validate, Sanitize} {
+	for _, setting := range []ActionChoice{VALIDATE, SANITIZE} {
 		s.Checker.CheckRefOptions.AllowOneLevel = false
 		s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = setting
 		s.Checker.Name = ReferenceName(AtLeastOneForwardSlashNames[0])
@@ -131,7 +131,7 @@ func (s *ReferenceValidationSuite) TestValidateAtLeastOneForwardSlash(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleAtLeastOneForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = Skip
+	s.Checker.ActionOptions.HandleAtLeastOneForwardSlash = SKIP
 	for _, name := range AtLeastOneForwardSlashNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleAtLeastOneForwardSlash()
@@ -140,7 +140,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleAtLeastOneForwardSlash(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleDoubleDots(c *C) {
-	s.Checker.ActionOptions.HandleDoubleDots = Validate
+	s.Checker.ActionOptions.HandleDoubleDots = VALIDATE
 	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
 	err := s.Checker.HandleDoubleDots()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefDoubleDots))
@@ -150,7 +150,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleDoubleDots(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleDoubleDots(c *C) {
-	s.Checker.ActionOptions.HandleDoubleDots = Sanitize
+	s.Checker.ActionOptions.HandleDoubleDots = SANITIZE
 	s.Checker.Name = ReferenceName(DoubleDotsNames[0])
 	err := s.Checker.HandleDoubleDots()
 	c.Assert(err, IsNil)
@@ -158,7 +158,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleDoubleDots(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleDoubleDots(c *C) {
-	s.Checker.ActionOptions.HandleDoubleDots = Skip
+	s.Checker.ActionOptions.HandleDoubleDots = SKIP
 	for _, name := range DoubleDotsNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleDoubleDots()
@@ -167,7 +167,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleDoubleDots(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleExcludedCharacters(c *C) {
-	s.Checker.ActionOptions.HandleExcludedCharacters = Validate
+	s.Checker.ActionOptions.HandleExcludedCharacters = VALIDATE
 	s.Checker.Name = ReferenceName(ExcludedCharactersNames[0])
 	err := s.Checker.HandleExcludedCharacters()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefExcludedCharacters))
@@ -177,7 +177,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleExcludedCharacters(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
-	s.Checker.ActionOptions.HandleExcludedCharacters = Sanitize
+	s.Checker.ActionOptions.HandleExcludedCharacters = SANITIZE
 	s.Checker.Name = ReferenceName(ExcludedCharactersNames[0])
 	err := s.Checker.HandleExcludedCharacters()
 	c.Assert(err, IsNil)
@@ -202,7 +202,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleExcludedCharacters(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleExcludedCharacters(c *C) {
-	s.Checker.ActionOptions.HandleExcludedCharacters = Skip
+	s.Checker.ActionOptions.HandleExcludedCharacters = SKIP
 	for _, name := range ExcludedCharactersNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleExcludedCharacters()
@@ -211,7 +211,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleExcludedCharacters(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleLeadingForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleLeadingForwardSlash = Validate
+	s.Checker.ActionOptions.HandleLeadingForwardSlash = VALIDATE
 	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
 	err := s.Checker.HandleLeadingForwardSlash()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefLeadingForwardSlash))
@@ -221,7 +221,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleLeadingForwardSlash(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleLeadingForwardSlash = Sanitize
+	s.Checker.ActionOptions.HandleLeadingForwardSlash = SANITIZE
 	s.Checker.Name = ReferenceName(LeadingForwardSlashNames[0])
 	err := s.Checker.HandleLeadingForwardSlash()
 	c.Assert(err, IsNil)
@@ -229,7 +229,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleLeadingForwardSlash(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleLeadingForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleLeadingForwardSlash = Skip
+	s.Checker.ActionOptions.HandleLeadingForwardSlash = SKIP
 	for _, name := range LeadingForwardSlashNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleLeadingForwardSlash()
@@ -238,7 +238,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleLeadingForwardSlash(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleTrailingForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleTrailingForwardSlash = Validate
+	s.Checker.ActionOptions.HandleTrailingForwardSlash = VALIDATE
 	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
 	err := s.Checker.HandleTrailingForwardSlash()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingForwardSlash))
@@ -248,7 +248,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleTrailingForwardSlash(c *C) 
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleTrailingForwardSlash = Sanitize
+	s.Checker.ActionOptions.HandleTrailingForwardSlash = SANITIZE
 	s.Checker.Name = ReferenceName(TrailingForwardSlashNames[0])
 	err := s.Checker.HandleTrailingForwardSlash()
 	c.Assert(err, IsNil)
@@ -256,7 +256,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingForwardSlash(c *C) 
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleTrailingForwardSlash(c *C) {
-	s.Checker.ActionOptions.HandleTrailingForwardSlash = Skip
+	s.Checker.ActionOptions.HandleTrailingForwardSlash = SKIP
 	for _, name := range TrailingForwardSlashNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleTrailingForwardSlash()
@@ -265,7 +265,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleTrailingForwardSlash(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleConsecutiveForwardSlashes(c *C) {
-	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Validate
+	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = VALIDATE
 	for index, name := range ConsecutiveForwardSlashesNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleConsecutiveForwardSlashes()
@@ -282,7 +282,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c
 
 	for _, element := range []int{0, 2} {
 		s.Checker.CheckRefOptions.Normalize = true
-		s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Sanitize
+		s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = SANITIZE
 		s.Checker.Name = ReferenceName(ConsecutiveForwardSlashesNames[element+0])
 		err := s.Checker.HandleConsecutiveForwardSlashes()
 		c.Assert(err, IsNil)
@@ -295,7 +295,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleConsecutiveForwardSlashes(c
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleConsecutiveForwardSlashes(c *C) {
-	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = Skip
+	s.Checker.ActionOptions.HandleConsecutiveForwardSlashes = SKIP
 	for _, name := range ConsecutiveForwardSlashesNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleConsecutiveForwardSlashes()
@@ -304,7 +304,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleConsecutiveForwardSlashes(c *C)
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleTrailingDot(c *C) {
-	s.Checker.ActionOptions.HandleTrailingDot = Validate
+	s.Checker.ActionOptions.HandleTrailingDot = VALIDATE
 	s.Checker.Name = ReferenceName(TrailingDotNames[0])
 	err := s.Checker.HandleTrailingDot()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefTrailingDot))
@@ -314,7 +314,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleTrailingDot(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingDot(c *C) {
-	s.Checker.ActionOptions.HandleTrailingDot = Sanitize
+	s.Checker.ActionOptions.HandleTrailingDot = SANITIZE
 	s.Checker.Name = ReferenceName(TrailingDotNames[0])
 	err := s.Checker.HandleTrailingDot()
 	c.Assert(err, IsNil)
@@ -322,7 +322,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleTrailingDot(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleTrailingDot(c *C) {
-	s.Checker.ActionOptions.HandleTrailingDot = Skip
+	s.Checker.ActionOptions.HandleTrailingDot = SKIP
 	for _, name := range TrailingDotNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleTrailingDot()
@@ -331,7 +331,7 @@ func (s *ReferenceValidationSuite) TestSkipHandleTrailingDot(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestValidateHandleAtOpenBrace(c *C) {
-	s.Checker.ActionOptions.HandleAtOpenBrace = Validate
+	s.Checker.ActionOptions.HandleAtOpenBrace = VALIDATE
 	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
 	err := s.Checker.HandleAtOpenBrace()
 	c.Assert(err, ErrorMatches, fmt.Sprint(ErrRefAtOpenBrace))
@@ -341,7 +341,7 @@ func (s *ReferenceValidationSuite) TestValidateHandleAtOpenBrace(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSanitizeHandleAtOpenBrace(c *C) {
-	s.Checker.ActionOptions.HandleAtOpenBrace = Sanitize
+	s.Checker.ActionOptions.HandleAtOpenBrace = SANITIZE
 	s.Checker.Name = ReferenceName(AtOpenBraceNames[0])
 	err := s.Checker.HandleAtOpenBrace()
 	c.Assert(err, IsNil)
@@ -349,7 +349,7 @@ func (s *ReferenceValidationSuite) TestSanitizeHandleAtOpenBrace(c *C) {
 }
 
 func (s *ReferenceValidationSuite) TestSkipHandleAtOpenBrace(c *C) {
-	s.Checker.ActionOptions.HandleAtOpenBrace = Skip
+	s.Checker.ActionOptions.HandleAtOpenBrace = SKIP
 	for _, name := range AtOpenBraceNames {
 		s.Checker.Name = ReferenceName(name)
 		err := s.Checker.HandleAtOpenBrace()
@@ -357,6 +357,6 @@ func (s *ReferenceValidationSuite) TestSkipHandleAtOpenBrace(c *C) {
 	}
 }
 
-func (s *ReferenceValidationSuite) TestCheckRefName(c *C) {
-	s.Checker.CheckRefName()
-}
+// func (s *ReferenceValidationSuite) TestCheckRefName(c *C) {
+// 	s.Checker.CheckRefName()
+// }

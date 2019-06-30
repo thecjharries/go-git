@@ -36,7 +36,7 @@ func (b *Branch) Validate() error {
 		return errBranchEmptyName
 	}
 
-	if b.Merge != "" && !b.Merge.IsBranch() {
+	if b.Merge.IsNotEmpty() && !b.Merge.IsBranch() {
 		return errBranchInvalidMerge
 	}
 
@@ -63,10 +63,10 @@ func (b *Branch) marshal() *format.Subsection {
 		b.raw.SetOption(remoteSection, b.Remote)
 	}
 
-	if b.Merge == "" {
+	if !b.Merge.IsNotEmpty() {
 		b.raw.RemoveOption(mergeKey)
 	} else {
-		b.raw.SetOption(mergeKey, string(b.Merge))
+		b.raw.SetOption(mergeKey, b.Merge.Name)
 	}
 
 	if b.Rebase == "" {
@@ -83,7 +83,7 @@ func (b *Branch) unmarshal(s *format.Subsection) error {
 
 	b.Name = b.raw.Name
 	b.Remote = b.raw.Options.Get(remoteSection)
-	b.Merge = plumbing.ReferenceName(b.raw.Options.Get(mergeKey))
+	b.Merge = plumbing.NewReferenceName(b.raw.Options.Get(mergeKey))
 	b.Rebase = b.raw.Options.Get(rebaseKey)
 
 	return b.Validate()

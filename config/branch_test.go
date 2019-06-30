@@ -13,11 +13,11 @@ func (b *BranchSuite) TestValidateName(c *C) {
 	goodBranch := Branch{
 		Name:   "master",
 		Remote: "some_remote",
-		Merge:  "refs/heads/master",
+		Merge:  plumbing.NewReferenceName("refs/heads/master"),
 	}
 	badBranch := Branch{
 		Remote: "some_remote",
-		Merge:  "refs/heads/master",
+		Merge:  plumbing.NewReferenceName("refs/heads/master"),
 	}
 	c.Assert(goodBranch.Validate(), IsNil)
 	c.Assert(badBranch.Validate(), NotNil)
@@ -27,12 +27,12 @@ func (b *BranchSuite) TestValidateMerge(c *C) {
 	goodBranch := Branch{
 		Name:   "master",
 		Remote: "some_remote",
-		Merge:  "refs/heads/master",
+		Merge:  plumbing.NewReferenceName("refs/heads/master"),
 	}
 	badBranch := Branch{
 		Name:   "master",
 		Remote: "some_remote",
-		Merge:  "blah",
+		Merge:  plumbing.NewReferenceName("blah"),
 	}
 	c.Assert(goodBranch.Validate(), IsNil)
 	c.Assert(badBranch.Validate(), NotNil)
@@ -51,7 +51,7 @@ func (b *BranchSuite) TestMarshall(c *C) {
 	cfg.Branches["branch-tracking-on-clone"] = &Branch{
 		Name:   "branch-tracking-on-clone",
 		Remote: "fork",
-		Merge:  plumbing.ReferenceName("refs/heads/branch-tracking-on-clone"),
+		Merge:  plumbing.NewReferenceName("refs/heads/branch-tracking-on-clone"),
 		Rebase: "interactive",
 	}
 
@@ -75,6 +75,6 @@ func (b *BranchSuite) TestUnmarshall(c *C) {
 	branch := cfg.Branches["branch-tracking-on-clone"]
 	c.Assert(branch.Name, Equals, "branch-tracking-on-clone")
 	c.Assert(branch.Remote, Equals, "fork")
-	c.Assert(branch.Merge, Equals, plumbing.ReferenceName("refs/heads/branch-tracking-on-clone"))
+	c.Assert(branch.Merge, Equals, plumbing.NewReferenceName("refs/heads/branch-tracking-on-clone"))
 	c.Assert(branch.Rebase, Equals, "interactive")
 }
